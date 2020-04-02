@@ -1,5 +1,6 @@
 = How to install =
 
-clone this repo into ~/.config/nvim
-Install Vundle, and do ":PluginInstall" inside nvim. 
-Mv .bashrc inside ~/
+- clone this repo into ~/.config/nvim
+- Install Vundle, and do ":PluginInstall" inside nvim. 
+- link .bashrc inside ~/
+- link .tmux.conf inside ~/

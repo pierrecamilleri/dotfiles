@@ -44,9 +44,13 @@ Plugin 'godlygeek/tabular'
 " Plugin 'corriander/vim-markdown-indent'
 " Plugin 'JamshedVesuna/vim-markdown-preview'
 
+" Text objects
+Plugin 'kana/vim-textobj-user'
+Plugin 'sgur/vim-textobj-parameter'
+
 " Wiki
 Plugin 'vimwiki/vimwiki'
-Plugin 'fcpg/vim-waikiki'
+" Plugin 'fcpg/vim-waikiki'
 Plugin 'noahfrederick/vim-skeleton'
 
 
@@ -227,10 +231,30 @@ let g:vim_markdown_conceal = 0
 let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_strikethrough = 1
 
+let g:pandoc#biblio#bibs = ["/home/pierre/Documents/biblio/Ma bibliothèque.bib"]
+let g:pandoc#biblio#use_bibtool  = 1
 let g:pandoc#modules#disabled = ["folding", "spell"]
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#filetypes#handled = ["pandoc", "rst", "textile", "markdown"]
-" nnoremap dc :DiffChangesDiffToggle<CR>
+
+
+call textobj#user#plugin('rmarkdown', {
+\   'chunk': {
+\     'pattern': ['```{.*}\n', '```'],
+\     'select-a': [],
+\     'select-i': [],
+\   },
+\ })
+
+augroup tex_textobjs
+  autocmd!
+  autocmd FileType rmarkdown call textobj#user#map('rmarkdown', {
+  \   'chunk': {
+  \     'select-a': '<buffer> ac',
+  \     'select-i': '<buffer> ic',
+  \   },
+  \ })
+augroup END
 
 " Latex
 augroup latex

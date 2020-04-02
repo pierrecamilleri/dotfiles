@@ -94,4 +94,3 @@ fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-source /usr/local/etc/bash_completion.d/papis.sh

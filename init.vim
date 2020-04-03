@@ -236,6 +236,7 @@ let g:pandoc#biblio#use_bibtool  = 1
 let g:pandoc#modules#disabled = ["folding", "spell"]
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#filetypes#handled = ["pandoc", "rst", "textile", "markdown"]
+let g:pandoc#keyboard#use_default_mappings = 0
 
 
 call textobj#user#plugin('rmarkdown', {

@@ -379,7 +379,7 @@ set shada='100,f1,<500,:1000,@1000,/1000
 """"""""" Additional sourced files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " If bepo mapping at nvim starting.
-if !empty(system("setxkbmap -print|grep bepo"))
+if !empty(system("setxkbmap -print 2> /dev/null |grep bepo"))
   source ~/.config/nvim/nvimbepo.vim
 endif
 

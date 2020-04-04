@@ -575,10 +575,10 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> <C-W>z <plug>(lsp-preview-close)
 endfunction
 
-augroup autoformat
-  au!
-  autocmd BufWritePre *  :LspDocumentFormat
-augroup END
+" augroup autoformat
+"   au!
+"   autocmd BufWritePre *  :LspDocumentFormat
+" augroup END
 
 augroup lsp_install
   au!

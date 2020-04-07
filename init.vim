@@ -46,7 +46,8 @@ Plugin 'godlygeek/tabular'
 
 " Text objects
 Plugin 'kana/vim-textobj-user'
-Plugin 'sgur/vim-textobj-parameter'
+Plugin 'sgur/vim-textobj-parameter' " a,
+Plugin 'Julian/vim-textobj-variable-segment' " av
 
 " Wiki
 Plugin 'vimwiki/vimwiki'
@@ -601,6 +602,43 @@ let g:slime_no_mappings = 1
 " slime mappings
 xmap   <localleader><localleader>   <Plug>SlimeRegionSend
 nmap   <localleader>                <Plug>SlimeMotionSend
-nmap   <localleader><localleader>   <Plug>SlimeLineSend
+nmap   <localleader><localleader>   <Plug>SlimeLineSend1
 nmap   <c-c>v                       <Plug>SlimeConfig
+
+function! SendRCommand()
+  normal var
+  execute "normal \<Plug>SlimeRegionSend"
+  normal! '>j
+endfunction
+
+nmap <localleader>ar :call SendRCommand()<CR>
+
+call textobj#user#plugin('rcommand', {
+      \   '-': {
+      \     'select-a-function': 'Rcommand',
+      \     'select-a': 'ar',
+      \     'select-i-function': 'Rcommand',
+      \     'select-i': 'ir',
+      \   },
+      \ })
+
+function! Rcommand()
+  normal! ^
+  let end_of_command = 0
+  let head_pos = getpos('.')
+  while end_of_command != 1
+    if search('(\|[\|{', 'c', line('.')) != 0
+      normal! %
+    endif
+    if search('\(\s*%\S*%\s*$\|\s*+\s*$\|\s*-\s*$\|\s*\*\s*$\|\s*/\s*$\|\s*<-\s*$\|\s*=\s*$\)', 'cW', line('.'))
+      normal! j0
+      let end_of_command = 0
+    else
+      normal $
+      let end_of_command = 1
+    endif
+  endwhile
+  let tail_pos = getpos('.')
+  return ['v', head_pos, tail_pos]
+endfunction
 

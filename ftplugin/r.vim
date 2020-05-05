@@ -75,9 +75,9 @@
 "let g:R_assign = 2
 
 "" Indentation
-"let g:r_indent_align_args = 0
-"let g:r_indent_ess_comments = 0
-"let g:r_indent_ess_compatible = 0
+let g:r_indent_align_args = 0
+let g:r_indent_ess_comments = 0
+let g:r_indent_ess_compatible = 0
 
 "let g:R_rconsole_height = 25
 "let g:R_rconsole_width = 40
@@ -124,18 +124,18 @@
 "let g:R_user_maps_only = 1
 
 
-"inoreabbrev <buffer> #'' #' Title
-"      \<CR>
-"      \<CR>@param param
-"      \<CR>
-"      \<CR> @return
-"      \<CR>@export
-"      \<CR>
-"      \<CR>@examples
-"inoreabbrev <buffer> func function(){
-"      \<CR>}<esc>k$hi
-"setlocal formatoptions+=ro
-"setlocal comments=:#'\ ,:#',:###,:##,:#\ ,:#
+inoreabbrev <buffer> #'' #' Title
+      \<CR>
+      \<CR>@param param
+      \<CR>
+      \<CR> @return
+      \<CR>@export
+      \<CR>
+      \<CR>@examples
+inoreabbrev <buffer> func function(){
+      \<CR>}<esc>k$hi
+setlocal formatoptions+=ro
+setlocal comments=:#'\ ,:#',:###,:##,:#\ ,:#
 
 
 "function! s:StoreSelCommand() range

@@ -95,7 +95,7 @@ Plugin 'christoomey/vim-tmux-navigator'
 " Syntax checking / Now Ale
 " Plugin 'vim-syntastic/syntastic'
 
-" Test of vim-lsp - language server protocol
+" vim-lsp - language server protocol
 Plugin 'prabirshrestha/async.vim'
 Plugin 'prabirshrestha/vim-lsp'
 Plugin 'mattn/vim-lsp-settings'
@@ -223,6 +223,10 @@ function! s:check_back_space() abort "{{{
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
+
+"Search
+set ignorecase
+set smartcase
 
 "Markdown recognition
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown comments=fb:>,fb:*,fb:+,fb:- formatoptions+=taw
@@ -444,6 +448,9 @@ nnoremap [l :lprevious<CR>
 nnoremap <C-W><C-L> :lclose<CR>
 nnoremap <C-W>l :lclose<CR>
 
+" close preview
+" No new mapping: <C-W>z
+
 " Pretty xml
 function! DoPrettyXML()
   " save the filetype so we can restore it later
@@ -483,9 +490,6 @@ augroup TrimWhitespace
   autocmd FileType pandoc,markdown let b:noStripWhitespace=1
   autocmd BufWritePre *  :execute "normal \<Plug>TrimWhitespace"
 augroup END
-
-"" waikiki test
-
 
 
 "" vimwiki options
@@ -594,16 +598,22 @@ let g:lsp_preview_max_width = 80
 let g:lsp_signature_help_enabled = 0
 
 
-" vim-slime config
-let g:slime_target = "tmux"
-let g:slime_paste_file = tempname()
-let g:slime_no_mappings = 1
 
 " slime mappings
-xmap   <localleader><localleader>   <Plug>SlimeRegionSend
-nmap   <localleader>                <Plug>SlimeMotionSend
-nmap   <localleader><localleader>   <Plug>SlimeLineSend1
-nmap   <c-c>v                       <Plug>SlimeConfig
+
+augroup slimebindings
+  autocmd! slimebindings
+
+  " vim-slime config
+  let g:slime_target = "tmux"
+  let g:slime_paste_file = tempname()
+  let g:slime_no_mappings = 1
+  let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+  autocmd Filetype r,rmd xmap   <localleader><localleader>   <Plug>SlimeRegionSend
+  autocmd Filetype r,rmd nmap   <localleader>                <Plug>SlimeMotionSend
+  autocmd Filetype r,rmd nmap   <localleader><localleader>   <Plug>SlimeLineSend1
+  autocmd Filetype r,rmd nmap   <localleader>cc              <Plug>SlimeConfig
+augroup end
 
 function! SendRCommand()
   normal var
@@ -627,9 +637,9 @@ function! Rcommand()
   let end_of_command = 0
   let head_pos = getpos('.')
   while end_of_command != 1
-    if search('(\|[\|{', 'c', line('.')) != 0
+    while search('(\|[\|{', 'c', line('.')) != 0
       normal! %
-    endif
+    endwhile
     if search('\(\s*%\S*%\s*$\|\s*+\s*$\|\s*-\s*$\|\s*\*\s*$\|\s*/\s*$\|\s*<-\s*$\|\s*=\s*$\)', 'cW', line('.'))
       normal! j0
       let end_of_command = 0

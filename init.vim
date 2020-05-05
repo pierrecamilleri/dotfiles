@@ -395,30 +395,27 @@ endif
 " ------------------------------------------------------------------------------
 " Find a file in the current directory by subset of name
 set path+=**
-nnoremap <leader>f :FzfFiles<CR>
-set rtp+=~/.fzf
+set runtimepath+=~/.fzf
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_buffers_jump = 1
 
-"------------------------------------------------------------------------------
-" -------- Finding content -----------------------------------------------------
-" ------------------------------------------------------------------------------
-" grepping
-nnoremap <leader>g :FzfRg<CR>
+command! -bang -nargs=* -complete=dir FzfFiles
+  \ call fzf#vim#files(".", {'options': ['--query=<args>', "--exact"]}, <bang>0)
+nnoremap <leader>f :FzfFiles<SPACE>
 
-" search with :g/<pattern>/#
-" nnoremap é :g//#<Left><Left>
-nnoremap é :FzfBLine<CR>
-"
-" ------------------------------------------------------------------------------
-" -------- Finding tags --------------------------------------------------------
-" ------------------------------------------------------------------------------
+nnoremap <leader>g :FzfRg<SPACE>
+
+command! -bang -nargs=? -complete=dir FzfFiles
+  \ call fzf#vim#files(".", {'options': ['--query=<args>', "--exact"]}, <bang>0)
+
+nnoremap <leader>h :FzfBLines<SPACE>
+
+" Search through tags
+nnoremap <leader>t :FzfTags<CR>
 
 " If several tags are available, ask which one to choose
 nnoremap <C-]> g<C-]>
 
-" Search through tags
-nnoremap <leader>t :FzfTags<CR>
 
 " ------------------------------------------------------------------------------
 " -------- Opening file --------------------------------------------------------
@@ -550,6 +547,7 @@ nnoremap <silent> <leader>m :call fzf#run({
       \ 'sink*': function('<sid>bibtex_markdown_sink'),
       \ 'up': '40%',
       \ 'options': '--ansi --layout=reverse-list --multi --prompt "Markdown> "'})<CR>
+
 " Tags the date on following line
 nnoremap <leader>d :r !date<CR>
 

@@ -100,6 +100,8 @@ bind "set show-all-if-ambiguous on"
 bind "set completion-ignore-case on"
 bind "set menu-complete-display-prefix on"
 
+export FZF_DEFAULT_OPTS="--exact"
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/pierre/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"

@@ -405,10 +405,10 @@ nnoremap <leader>f :FzfFiles<SPACE>
 
 nnoremap <leader>g :FzfRg<SPACE>
 
-command! -bang -nargs=? -complete=dir FzfFiles
-  \ call fzf#vim#files(".", {'options': ['--query=<args>', "--exact"]}, <bang>0)
 
-nnoremap <leader>h :FzfBLines<SPACE>
+command! -bang -nargs=* FzfBLines
+  \ call fzf#vim#buffer_lines(<q-args>, {'options': ['--multi']}, <bang>0)
+nnoremap <leader>l :FzfBLines<SPACE>
 
 " Search through tags
 nnoremap <leader>t :FzfTags<CR>

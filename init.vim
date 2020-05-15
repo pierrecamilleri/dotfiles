@@ -51,7 +51,6 @@ Plugin 'Julian/vim-textobj-variable-segment' " av
 
 " Wiki
 Plugin 'vimwiki/vimwiki'
-" Plugin 'fcpg/vim-waikiki'
 Plugin 'noahfrederick/vim-skeleton'
 
 
@@ -99,6 +98,9 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'prabirshrestha/async.vim'
 Plugin 'prabirshrestha/vim-lsp'
 Plugin 'mattn/vim-lsp-settings'
+
+" Typescript
+Plugin 'leafgarland/typescript-vim'
 
 " Send code to interpreter
 Plugin 'jpalardy/vim-slime'
@@ -400,7 +402,7 @@ let g:fzf_command_prefix = 'Fzf'
 let g:fzf_buffers_jump = 1
 
 command! -bang -nargs=* -complete=dir FzfFiles
-  \ call fzf#vim#files(".", {'options': ['--query=<args>', "--exact"]}, <bang>0)
+  \ call fzf#vim#files(".", {'options': ['--query=<args> ', "--exact"]}, <bang>0)
 nnoremap <leader>f :FzfFiles<SPACE>
 
 nnoremap <leader>g :FzfRg<SPACE>

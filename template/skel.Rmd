@@ -1,0 +1,17 @@
+---
+title: "@BASENAME@"
+author: "Pierre Camilleri"
+date: "@DATE@"
+output:
+  html_document:
+    theme: readable
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r @CURSOR@}
+
+```

@@ -25,6 +25,8 @@ Plugin 'tpope/vim-surround'
 " R
 " Plugin 'jalvesaq/Nvim-R'
 " Plugin 'mllg/vim-devtools-plugin'
+Plugin 'fvictorio/vim-extract-variable'
+Plugin 'chrisbra/NrrwRgn'
 
 " stan
 Plugin 'eigenfoo/stan-vim'
@@ -99,13 +101,14 @@ Plugin 'prabirshrestha/async.vim'
 Plugin 'prabirshrestha/vim-lsp'
 Plugin 'mattn/vim-lsp-settings'
 
+" EditorConfig file support
+Plugin 'editorconfig/editorconfig-vim'
+
 " Typescript
 Plugin 'leafgarland/typescript-vim'
 
 " Send code to interpreter
 Plugin 'jpalardy/vim-slime'
-
-
 
 " Go plugin
 " Don't know how to use it, bug should dig into it
@@ -598,6 +601,9 @@ let g:lsp_preview_max_width = 80
 let g:lsp_signature_help_enabled = 0
 
 
+" Editorconfig configuration
+" As suggested in README to work with fugitive.
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " slime mappings
 

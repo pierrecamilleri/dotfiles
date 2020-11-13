@@ -1,4 +1,5 @@
 augroup autoformat
   au!
-  autocmd BufWritePre *  :LspDocumentFormat
+  " autocmd BufWritePre *  :LspDocumentFormatSync
+  " autocmd BufWritePre *.ts  :EslintFix
 augroup END

@@ -13,7 +13,7 @@ noremap s k
 noremap C H
 noremap R L
 " {TS} = « joindre / aide »
-noremap T J
+noremap <C-j> J
 noremap S K
 " Corollaire : repli suivant / précédent
 noremap zs zj

@@ -1,2 +1,2 @@
-= @BASENAME@ =
+%title @BASENAME@
 @CURSOR@

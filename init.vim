@@ -9,6 +9,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Nice coloscheme
 Plugin 'morhetz/gruvbox'
+Plugin 'chriskempson/base16-vim'
 
 " fzf
 Plugin 'junegunn/fzf.vim'
@@ -54,6 +55,7 @@ Plugin 'Julian/vim-textobj-variable-segment' " av
 " Wiki
 Plugin 'vimwiki/vimwiki'
 Plugin 'noahfrederick/vim-skeleton'
+Plugin 'mattn/calendar-vim'
 
 
 " Latex
@@ -84,6 +86,7 @@ Plugin 'majutsushi/tagbar'
 
 " Nice statusline
 Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " Comments
 Plugin 'tpope/vim-commentary'
@@ -184,11 +187,12 @@ set hidden
 
 set textwidth=78
 
-" Colorscheme
-let g:gruvbox_italic=1
-colorscheme gruvbox
-set background=dark
+" let g:gruvbox_italic=1
+" colorscheme gruvbox
+" set background=dark
+" let base16colorspace=256
 set termguicolors
+colorscheme base16-gruvbox-dark-soft
 
 "Split navigation
 nnoremap <C-J> <C-W><C-J>
@@ -352,6 +356,8 @@ cnoremap <expr> <CR> CCR()
 " nmap --- 078i-<Esc>"yY"yP"yp:.-1,.+1Co<CR>10lR<Space>
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/archive*/*,*/man/*
+set wildmode=longest:full,full
+set wildmenu
 
 " Undotree
 nnoremap <leader>ut :UndotreeToggle<cr>
@@ -616,10 +622,11 @@ augroup slimebindings
   let g:slime_no_mappings = 1
   let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
   let g:slime_dont_ask_default = 1
-  autocmd Filetype r,rmd xmap   <localleader><localleader>   <Plug>SlimeRegionSend
-  autocmd Filetype r,rmd nmap   <localleader>                <Plug>SlimeMotionSend
-  autocmd Filetype r,rmd nmap   <localleader><localleader>   <Plug>SlimeLineSend1
-  autocmd Filetype r,rmd nmap   <localleader>cc              <Plug>SlimeConfig
+  autocmd Filetype r,rmarkdown,python xmap   <localleader><localleader>   <Plug>SlimeRegionSend
+  autocmd Filetype r,rmarkdown,python nmap   <localleader>                <Plug>SlimeMotionSend
+  autocmd Filetype r,rmarkdown,python nmap   <localleader><localleader>   <Plug>SlimeLineSend1
+  autocmd Filetype r,rmarkdown,python nmap   <silent> <localleader>c      :call slime#send("\x03")<CR>
+  autocmd Filetype r                  nmap   <silent> <localleader>s      :call slime#send("source(\"" .  expand('%:p') . "\")\r")<CR>
 augroup end
 
 function! SendRCommand()
@@ -659,3 +666,11 @@ function! Rcommand()
   return ['v', head_pos, tail_pos]
 endfunction
 
+" eslint
+function! EslintFix()
+    let l:winview = winsaveview()
+    silent !eslint --fix %
+    call winrestview(l:winview)
+    edit! %
+endfunction
+command! EslintFix :call EslintFix()

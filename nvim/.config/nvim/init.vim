@@ -390,13 +390,15 @@ set undofile
 set undodir^=~/.vim/undodir//
 
 " change shada
-set shada='100,f1,<500,:1000,@1000,/1000
+if has('nvim')
+  set shada='100,f1,<500,:1000,@1000,/1000
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""" Additional sourced files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " If bepo mapping at nvim starting.
-if !empty(system("setxkbmap -print 2> /dev/null |grep bepo"))
+if !empty(system("setxkbmap -print 2> /dev/null | grep bepo"))
   source ~/.config/nvim/nvimbepo.vim
 endif
 

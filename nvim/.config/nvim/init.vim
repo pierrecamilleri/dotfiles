@@ -512,7 +512,7 @@ let g:vimwiki_list = [{
   \ 'template_ext': '.html'
  \ }]
 
-let g:vimwiki_auto_export = 1
+let g:vimwiki_auto_export = 0
 let g:vimwiki_auto_chdir = 1
 nmap <C-N> <Plug>VimwikiNextLink
 nmap <C-P> <Plug>VimwikiPrevLink

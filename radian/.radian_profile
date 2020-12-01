@@ -1,0 +1,28 @@
+options(radian.editing_mode = "vi")
+
+# disable auto match brackets and quotes
+options(radian.auto_match = FALSE)
+
+# Standard tab_size
+options(radian.tab_size = 2)
+
+# do not pop up completion while typing
+options(radian.complete_while_typing = FALSE)
+
+# do not insert new line between prompts
+options(radian.insert_new_line = TRUE)
+
+# allows user defined shortcuts, these keys should be escaped when send
+# through the terminal.
+# In the following example, `esc` + `-` sends `<-` and `esc` + `m` sends
+# `%>%`.
+# Note that in some terminals, you could mark `alt` as `escape` so you could
+# use `alt` + `-` instead.
+options(
+  radian.escape_key_map = list(
+    list(key = "-", value = " <- "),
+    list(key = "m", value = " %>% ")
+  )
+)
+
+

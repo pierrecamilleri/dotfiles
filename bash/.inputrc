@@ -1,0 +1,15 @@
+
+# Use vi for bash, + dans ~/.inputrc
+set editing-mode vi
+# set keymap vi-command
+# Pour changer le curseur vi en mode insert
+set show-mode-in-prompt on
+set vi-cmd-mode-string "\1\e[2 q\2"
+set vi-ins-mode-string "\1\e[6 q\2"
+
+# consulter l'historique avec Ctrl-flèche
+"\e[1;5A": history-search-backward
+"\e[1;5B": history-search-forward
+# Afficher les processus en arrière plan avec maj-j
+"\e[j": "jobs\n"
+

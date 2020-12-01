@@ -1,12 +1,27 @@
-= How to use the dotfiles =
+How to install
+--------------
 
-- Clone the repository into your '~' home repository.
-- Install [gnu stow](https://www.gnu.org/software/stow/)
-- `cd` into `~/dotfiles`  and enter `stow ***` where `***` is the name of the 
-  directory you want insall the dotfiles from.
-  
- Possible directories:
- - bash: "bash" and "readline" configuration
- - nvim: "neovim" configuration
- - tmux
- - ipython
+
+```bash
+# clone this repo into ~/dotfiles
+cd ~
+git clone JazzyPierrot/dotfiles
+sudo apt install stow
+```
+
+And then stow the config files you are interested in from inside the dotfiles 
+repository:
+
+```bash
+cd ./dotfiles
+stow nvim # Vim and nvim
+stow bash # Bash and readline
+stow tmux 
+```
+
+
+Vim configuration
+=================
+
+- Install Vundle, and do ":PluginInstall" inside nvim. 
+

@@ -624,6 +624,7 @@ augroup slimebindings
   let g:slime_no_mappings = 1
   let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
   let g:slime_dont_ask_default = 1
+  let g:slime_python_ipython = 1
   autocmd Filetype r,rmarkdown,python xmap   <localleader><localleader>   <Plug>SlimeRegionSend
   autocmd Filetype r,rmarkdown,python nmap   <localleader>                <Plug>SlimeMotionSend
   autocmd Filetype r,rmarkdown,python nmap   <localleader><localleader>   <Plug>SlimeLineSend1

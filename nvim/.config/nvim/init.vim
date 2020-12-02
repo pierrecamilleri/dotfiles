@@ -228,14 +228,22 @@ let g:maximizer_set_mapping_with_bang = 1
 let g:maximizer_default_mapping_key = '<C-W>m'
 
 
-function! s:check_back_space() abort "{{{
+" {{{
+function! s:check_back_space() abort "
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
+endfunction "}}}
 
-"Search
+" Search options {{{
 set ignorecase
 set smartcase
+" }}}
+
+" Vimscript file settings {{{
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+augroup END "}}}
 
 "Markdown recognition
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown comments=fb:>,fb:*,fb:+,fb:- formatoptions+=taw
@@ -681,3 +689,5 @@ function! EslintFix()
     edit! %
 endfunction
 command! EslintFix :call EslintFix()
+
+

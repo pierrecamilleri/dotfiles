@@ -495,8 +495,12 @@ endfunction
 command! PrettyXML call DoPrettyXML()
 
 
-augroup TrimWhitespace
-  autocmd!
+" highlight whitespace
+nnoremap <leader>e :execute 'match Error "\v\s+$"'<cr>
+nnoremap <leader>E :execute 'match none'<cr>
+
+augrou TrimWhitespace
+  autocm!
   autocmd FileType pandoc,markdown let b:noStripWhitespace=1
   autocmd BufWritePre *  :execute "normal \<Plug>TrimWhitespace"
 augroup END

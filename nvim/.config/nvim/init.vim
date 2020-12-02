@@ -1,3 +1,4 @@
+" Plugins {{{
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -146,54 +147,68 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
+" }}}
 
+" General mappings {{{
+let maplocalleader = " "
+let mapleader = ","
 
-" STANDARD BEHAVIOR
+" escape on jk
+inoremap jk <esc>
+
+" disable ex mode
+map Q <Nop>
+nnoremap <SPACE> <Nop>
+inoremap <esc> <Nop>
+
+" training the fingers
+noremap <down> <Nop>
+noremap <up> <Nop>
+noremap <left> <Nop>
+noremap <right> <Nop>
+
+inoremap <down> <Nop>
+inoremap <up> <Nop>
+inoremap <left> <Nop>
+inoremap <right> <Nop>
+" }}}
+
+" Display options {{{
 
 " syntax highlighting
 syntax on
 
-" built-in 'matchit.vim'
-" hit '%' on 'if' to jump to 'else'…
-runtime macros/matchit.vim
-set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
-set autoindent
-
-" Preferred default settings
+" Preferred default settings.
 set nowrap
-
 set nohlsearch
 
+" Line numbering
 set relativenumber
 set number
-augroup KeepJumps
-  autocmd!
-  autocmd BufNewFile,BufFilePre,BufRead :keepjumps O
-  autocmd BufNewFile,BufFilePre,BufRead :keepjumps I
-augroup END
+
+" Auto-scrolling
+set scrolloff=6
+set sidescrolloff=15
 
 
-" disable ex mode
-map Q <Nop>
+" }}}
 
-" General
-let maplocalleader = " "
-let mapleader = ","
-nnoremap <SPACE> <Nop>
-" nnoremap <Space> <nop>
-
-" Buffers
-set hidden
-
-set textwidth=78
-
+" Colorscheme {{{
 " let g:gruvbox_italic=1
 " colorscheme gruvbox
 " set background=dark
 " let base16colorspace=256
 set termguicolors
 colorscheme base16-gruvbox-dark-soft
+" }}}
 
+augroup KeepJumps
+  autocmd!
+  autocmd BufNewFile,BufFilePre,BufRead :keepjumps O
+  autocmd BufNewFile,BufFilePre,BufRead :keepjumps I
+augroup END
+
+" Navigation {{{
 "Split navigation
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -211,32 +226,49 @@ nnoremap <C-W><K> <C-W><C-S-K>
 nnoremap <C-W><L> <C-W><C-S-L>
 nnoremap <C-W><H> <C-W><C-S-H>
 
+set hidden
+" go to alternate buffer
+nnoremap _ :b#<CR>
+
 "Open split
 nnoremap à :vsplit<CR>
 
 " Move split
-noremap <C-W><< :vertical resize -10<CR>
-noremap <C-W>>> :vertical resize +10<CR>
+noremap <C-W>< :vertical resize -10<CR>
+noremap <C-W>> :vertical resize +10<CR>
 
 " Split position for new windows
 set splitbelow
 set splitright
+" }}}
 
-" Maximize window
-let g:maximizer_set_default_mapping = 1
-let g:maximizer_set_mapping_with_bang = 1
-let g:maximizer_default_mapping_key = '<C-W>m'
-
-
-" {{{
-function! s:check_back_space() abort "
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction "}}}
-
-" Search options {{{
+" Search for things {{{
+" Search options
 set ignorecase
 set smartcase
+
+" Find a file in the current directory by subset of name
+set path+=**
+set runtimepath+=~/.fzf
+let g:fzf_command_prefix = 'Fzf'
+let g:fzf_buffers_jump = 1
+
+command! -bang -nargs=* -complete=dir FzfFiles
+  \ call fzf#vim#files(".", {'options': ['--query=<args> ', "--exact"]}, <bang>0)
+nnoremap <leader>f :FzfFiles<SPACE>
+
+nnoremap <leader>g :FzfRg<SPACE>
+
+
+command! -bang -nargs=* FzfBLines
+  \ call fzf#vim#buffer_lines(<q-args>, {'options': ['--multi']}, <bang>0)
+nnoremap <leader>l :FzfBLines<SPACE>
+
+" Search through tags
+nnoremap <leader>t :FzfTags<CR>
+
+" If several tags are available, ask which one to choose
+nnoremap <C-]> g<C-]>
 " }}}
 
 " Vimscript file settings {{{
@@ -245,7 +277,7 @@ augroup filetype_vim
     autocmd FileType vim setlocal foldmethod=marker
 augroup END "}}}
 
-"Markdown recognition
+" Markdown and Pandoc options {{{
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown comments=fb:>,fb:*,fb:+,fb:- formatoptions+=taw
 let g:vim_markdown_folding_level = 2
 set conceallevel=0
@@ -259,8 +291,9 @@ let g:pandoc#modules#disabled = ["folding", "spell"]
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#filetypes#handled = ["pandoc", "rst", "textile", "markdown"]
 let g:pandoc#keyboard#use_default_mappings = 0
+" }}}
 
-
+" textobjects {{{
 call textobj#user#plugin('rmarkdown', {
 \   'chunk': {
 \     'pattern': ['```{.*}\n', '```'],
@@ -278,30 +311,45 @@ augroup tex_textobjs
   \   },
   \ })
 augroup END
+" }}}
 
-" Latex
+" Latex file settings {{{
 augroup latex
   autocmd!
   autocmd Filetype tex setl updatetime=1
   let g:livepreview_previewer = 'evince'
   let g:tex_flavor = 'pdflatex'
 augroup END
+" }}}
+
+" Edit stuff {{{
+set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+set autoindent
+
+set textwidth=78
+
+" built-in 'matchit.vim'
+" hit '%' on 'if' to jump to 'else'…
+runtime macros/matchit.vim
 
 " Argument wrapping
 nnoremap <silent> <leader>aa :ArgWrap<CR>
 
+" Tags the date on following line
+nnoremap <leader>d :r !date<CR>
+" }}}
 
-" Move on visible lines with arrows
-map <Up> gk
-map <Down> gj
-
+" Completsion settings {{{
 " Omnicompletion
-set completeopt=menuone,preview
+set completeopt=menuone,noinsert
+
 " Repeat for all other completion commands used ...
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/archive*/*,*/man/*
+set wildmode=longest:full,full
+set wildmenu
+" }}}
 
-
-" Auto Aligning pipe character
-"
+" Auto Aligning pipe character {{{
 function! s:align()
   let p = '^\s*|\s.*\s|\s*$'
   if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
@@ -313,7 +361,9 @@ function! s:align()
   endif
 endfunction
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+" }}}
 
+" Prompt for an item whith list-like commands {{{
 " make list-like commands more intuitive
 function! CCR()
   let cmdline = getcmdline()
@@ -354,26 +404,9 @@ endfunction
 
 " map '<CR>' in command-line mode to execute the function above
 cnoremap <expr> <CR> CCR()
+" }}}
 
-
-"Ale
-" let g:ale_r_lintr_options = 'lintr::with_defaults(object_usage_linter = NULL)'
-" let g:ale_r_lintr_lint_package = 1
-
-" Insert separation
-" nmap --- 078i-<Esc>"yY"yP"yp:.-1,.+1Co<CR>10lR<Space>
-
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/archive*/*,*/man/*
-set wildmode=longest:full,full
-set wildmenu
-
-" Undotree
-nnoremap <leader>ut :UndotreeToggle<cr>
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""""" Secure no data loss
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Secure no data loss {{{
 " Protect changes between writes. Default values of
 " updatecount (200 keystrokes) and updatetime
 " (4 seconds) are fine
@@ -401,47 +434,16 @@ set undodir^=~/.vim/undodir//
 if has('nvim')
   set shada='100,f1,<500,:1000,@1000,/1000
 endif
+" }}}
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""" Additional sourced files
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Source nvimbepo.vim if bepo keyboad layout {{{
 " If bepo mapping at nvim starting.
 if !empty(system("setxkbmap -print 2> /dev/null | grep bepo"))
   source ~/.config/nvim/nvimbepo.vim
 endif
+" }}}
 
-
-" ------------------------------------------------------------------------------
-" -------- Finding files -------------------------------------------------------
-" ------------------------------------------------------------------------------
-" Find a file in the current directory by subset of name
-set path+=**
-set runtimepath+=~/.fzf
-let g:fzf_command_prefix = 'Fzf'
-let g:fzf_buffers_jump = 1
-
-command! -bang -nargs=* -complete=dir FzfFiles
-  \ call fzf#vim#files(".", {'options': ['--query=<args> ', "--exact"]}, <bang>0)
-nnoremap <leader>f :FzfFiles<SPACE>
-
-nnoremap <leader>g :FzfRg<SPACE>
-
-
-command! -bang -nargs=* FzfBLines
-  \ call fzf#vim#buffer_lines(<q-args>, {'options': ['--multi']}, <bang>0)
-nnoremap <leader>l :FzfBLines<SPACE>
-
-" Search through tags
-nnoremap <leader>t :FzfTags<CR>
-
-" If several tags are available, ask which one to choose
-nnoremap <C-]> g<C-]>
-
-
-" ------------------------------------------------------------------------------
-" -------- Opening file --------------------------------------------------------
-" ------------------------------------------------------------------------------
-
+" File browser {{{
 " -- netrw
 
 let g:netrw_liststyle = 0
@@ -452,68 +454,46 @@ augroup netrw
   autocmd FileType netrw nnoremap <buffer> ? :help netrw-quickmap<CR>
 augroup END
 
-imap <F5> <Esc>:w<CR>:!clear;python %<CR>
+" Make directory of the file the current directory
+nnoremap <leader>cd :cd %:p:h<CR>
+" }}}
 
+" Quickfix window {{{
 nnoremap ]q :cnext<CR>
 nnoremap [q :cprevious<CR>
 " close quickfix
 nnoremap <C-W><C-Q> :cclose<CR>
 nnoremap <C-W>q :cclose<CR>
-
+" }}}
+" Location window {{{
 nnoremap ]l :lnext<CR>
 nnoremap [l :lprevious<CR>
 " close location
 nnoremap <C-W><C-L> :lclose<CR>
 nnoremap <C-W>l :lclose<CR>
+" }}}
+" Preview window {{{
+" close preview -no new mapping: <C-W>z
+" }}}
 
-" close preview
-" No new mapping: <C-W>z
-
-" Pretty xml
-function! DoPrettyXML()
-  " save the filetype so we can restore it later
-  let l:origft = &ft
-  set ft=
-  " delete the xml header if it exists. This will
-  " permit us to surround the document with fake tags
-  " without creating invalid xml.
-  1s/<?xml .*?>//e
-  " insert fake tags around the entire document.
-  " This will permit us to pretty-format excerpts of
-  " XML that may contain multiple top-level elements.
-  0put ='<PrettyXML>'
-  $put ='</PrettyXML>'
-  silent %!xmllint --format -
-  " xmllint will insert an <?xml?> header. it's
-  easy enough to delete
-  " if you don't want it.
-  " delete the fake tags
-  2d
-  $d
-  " restore the 'normal' indentation,
-  which is one extra level
-  " too deep due to the extra tags we
-  wrapped around the document.
-  silent %<
-  " back to home
-  1
-  " restore the filetype
-  exe "set ft=" . l:origft
-endfunction
-command! PrettyXML call DoPrettyXML()
-
-
+" Highlight stuff {{{
 " highlight whitespace
-nnoremap <leader>e :execute 'match Error "\v\s+$"'<cr>
-nnoremap <leader>E :execute 'match none'<cr>
+nnoremap <silent> <leader>hw :match Error "\v\s+$"<cr>
+nnoremap <silent> <leader>hW :match none<cr>
 
+nnoremap <silent> <leader>hs :set hlsearch<cr>
+nnoremap <silent> <leader>hS :set nohlsearch<cr>
+" }}}
+
+" Trim trailing whitespace {{{
 augrou TrimWhitespace
   autocm!
   autocmd FileType pandoc,markdown let b:noStripWhitespace=1
   autocmd BufWritePre *  :execute "normal \<Plug>TrimWhitespace"
 augroup END
+" }}}
 
-
+" Vimwiki {{{
 "" vimwiki options
 let g:vimwiki_list = [{
   \ 'path': '~/vimwiki/',
@@ -539,15 +519,16 @@ let g:tagbar_type_vimwiki = {
           \ }
 
 let g:skeleton_template_dir = "~/.config/nvim/template"
+" }}}
 
-"" Vim fugitive
+"" Vim fugitive {{{
 augroup clean_fugitive_buffers
   au!
   autocmd BufReadPost fugitive://* set bufhidden=delete
 augroup END
+" }}}
 
-
-"" Citations
+"" Citations {{{
 let $FZF_BIBTEX_CACHEDIR = '/home/pierre/Documents/biblio/'
 let $FZF_BIBTEX_SOURCES = '/home/pierre/Documents/biblio/Ma bibliothèque.bib'
 
@@ -572,14 +553,9 @@ nnoremap <silent> <leader>m :call fzf#run({
       \ 'sink*': function('<sid>bibtex_markdown_sink'),
       \ 'up': '40%',
       \ 'options': '--ansi --layout=reverse-list --multi --prompt "Markdown> "'})<CR>
+" }}}
 
-" Tags the date on following line
-nnoremap <leader>d :r !date<CR>
-
-" Make directory of the file the current directory
-nnoremap <leader>cd :cd %:p:h<CR>
-
-" vim-lsp config
+" vim-lsp config {{{
 function! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
   setlocal signcolumn=auto
@@ -620,13 +596,14 @@ let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_preview_max_width = 80
 let g:lsp_signature_help_enabled = 0
 
+" }}}
 
-" Editorconfig configuration
+" Editorconfig configuration {{{
 " As suggested in README to work with fugitive.
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+" }}}
 
-" slime mappings
-
+" Slime configuration {{{
 augroup slimebindings
   autocmd! slimebindings
 
@@ -680,8 +657,9 @@ function! Rcommand()
   let tail_pos = getpos('.')
   return ['v', head_pos, tail_pos]
 endfunction
+" }}}
 
-" eslint
+" eslint {{{
 function! EslintFix()
     let l:winview = winsaveview()
     silent !eslint --fix %
@@ -689,5 +667,4 @@ function! EslintFix()
     edit! %
 endfunction
 command! EslintFix :call EslintFix()
-
-
+" }}}

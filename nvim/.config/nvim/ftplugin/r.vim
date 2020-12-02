@@ -1,18 +1,9 @@
-"""""""""""""""""""""""""""
-"" TMUX and nvim-R config "
-"""""""""""""""""""""""""""
+" Configuration for r files
 
-"" Only do this when not done yet for this buffer
-"if exists("b:did_ftplugin")
-"  finish
-"endif
-"let b:did_ftplugin = 1
-
-"" Fixes weird character problem in some devel versions neovim under tmux
-"" sesssion. This might go away in future.
-"" set guicursor=
-
-"" settings :: Nvim-R plugin
+if exists("b:did_ftplugin")
+  finish
+endif
+let b:did_ftplugin = 1
 
 "" R output is highlighted with current colorscheme
 "let g:rout_follow_colorscheme = 1

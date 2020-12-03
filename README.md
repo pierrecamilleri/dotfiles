@@ -19,9 +19,17 @@ stow bash # Bash and readline
 stow tmux 
 ```
 
-
 Vim configuration
 =================
 
 - Install Vundle, and do ":PluginInstall" inside nvim. 
 
+Tmuxinator
+==========
+
+Tmuxinator is used to quickly open R and python sessions, with an alias in 
+.bash_aliases, the commands are:
+```bash
+tx start R
+tx start py
+```

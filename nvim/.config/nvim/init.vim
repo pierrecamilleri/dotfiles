@@ -153,13 +153,10 @@ filetype plugin indent on    " required
 let maplocalleader = " "
 let mapleader = ","
 
-" escape on jk
-inoremap jk <esc>
-
 " disable ex mode
 map Q <Nop>
 nnoremap <SPACE> <Nop>
-inoremap <esc> <Nop>
+" Escape mapped on caps lock in .bashrc
 
 " training the fingers
 noremap <down> <Nop>
@@ -325,6 +322,7 @@ augroup END
 " Edit stuff {{{
 set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 set autoindent
+set autoread
 
 set textwidth=78
 
@@ -337,11 +335,15 @@ nnoremap <silent> <leader>aa :ArgWrap<CR>
 
 " Tags the date on following line
 nnoremap <leader>d :r !date<CR>
+
+" coercions: cr shortcuts are removed in 'after' directory
+command! Coerce2Camel execute "normal \<Plug>(abolish-coerce)ciw"
+command! Coerce2Snake execute "normal \<Plug>(abolish-coerce)siw"
 " }}}
 
-" Completsion settings {{{
+" Completion settings {{{
 " Omnicompletion
-set completeopt=menuone,noinsert
+set completeopt=menu,longest
 
 " Repeat for all other completion commands used ...
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/archive*/*,*/man/*

@@ -616,10 +616,12 @@ augroup slimebindings
   let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
   let g:slime_dont_ask_default = 1
   let g:slime_python_ipython = 1
-  autocmd Filetype r,rmarkdown,python xmap   <localleader><localleader>   <Plug>SlimeRegionSend
-  autocmd Filetype r,rmarkdown,python nmap   <localleader>                <Plug>SlimeMotionSend
-  autocmd Filetype r,rmarkdown,python nmap   <localleader><localleader>   <Plug>SlimeLineSend1
-  autocmd Filetype r,rmarkdown,python nmap   <silent> <localleader>c      :call slime#send("\x03")<CR>
+  let interrupt_escape_sequence = "\x03"
+  let clearline_escape_sequence = "\<Esc>^Di"
+  autocmd Filetype r,rmarkdown,python xmap   <localleader><localleader>   :call slime#send(clearline_escape_sequence)<CR><Plug>SlimeRegionSend
+  autocmd Filetype r,rmarkdown,python nmap   <localleader>                :call slime#send(clearline_escape_sequence)<CR><Plug>SlimeMotionSend
+  autocmd Filetype r,rmarkdown,python nmap   <localleader><localleader>   :call slime#send(clearline_escape_sequence)<CR><Plug>SlimeLineSend1
+  autocmd Filetype r,rmarkdown,python nmap   <silent> <localleader>c      :call slime#send(interrupt_escape_sequence)<CR>
   autocmd Filetype r                  nmap   <silent> <localleader>s      :call slime#send("source(\"" .  expand('%:p') . "\")\r")<CR>
 augroup end
 

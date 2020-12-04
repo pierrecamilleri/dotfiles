@@ -33,3 +33,9 @@ Tmuxinator is used to quickly open R and python sessions, with an alias in
 tx start R
 tx start py
 ```
+
+Bash configuration
+==================
+
+For the coloscheme, see 
+https://github.com/aaron-williamson/base16-gnome-terminal for instructions

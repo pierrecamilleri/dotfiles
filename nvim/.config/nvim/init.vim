@@ -111,6 +111,10 @@ Plugin 'editorconfig/editorconfig-vim'
 " Typescript
 Plugin 'leafgarland/typescript-vim'
 
+" Python
+" Syntax highlighting
+Plugin 'numirias/semshi'
+
 " Send code to interpreter
 Plugin 'jpalardy/vim-slime'
 

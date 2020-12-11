@@ -61,10 +61,10 @@ noremap gt gj
 " ———————————————————————————————
 " touche alt pour éviter de casser ctrl-r
 
-nnoremap T <C-W><C-J>
-nnoremap S <C-W><C-K>
-nnoremap R <C-W><C-L>
-nnoremap C <C-W><C-H>
+nnoremap <M-t> <C-W><C-J>
+nnoremap <M-s> <C-W><C-K>
+nnoremap <M-r> <C-W><C-L>
+nnoremap <M-c> <C-W><C-H>
 
 inoremap <M-t> <ESC><C-W><C-J>
 inoremap <M-s> <ESC><C-W><C-K>

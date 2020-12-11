@@ -52,6 +52,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'kana/vim-textobj-user'
 Plugin 'sgur/vim-textobj-parameter' " a,
 Plugin 'Julian/vim-textobj-variable-segment' " av
+Plugin 'adolenc/vim-textobj-toplevel' " aT
 
 " Wiki
 Plugin 'vimwiki/vimwiki'
@@ -113,7 +114,7 @@ Plugin 'leafgarland/typescript-vim'
 
 " Python
 " Syntax highlighting
-Plugin 'numirias/semshi'
+Plugin 'Vimjas/vim-python-pep8-indent'
 
 " Send code to interpreter
 Plugin 'jpalardy/vim-slime'
@@ -201,6 +202,7 @@ set sidescrolloff=15
 " let base16colorspace=256
 set termguicolors
 colorscheme base16-gruvbox-dark-soft
+highlight Pmenu guibg=#504945
 " }}}
 
 augroup KeepJumps
@@ -347,7 +349,7 @@ command! Coerce2Snake execute "normal \<Plug>(abolish-coerce)siw"
 
 " Completion settings {{{
 " Omnicompletion
-set completeopt=menu,longest
+set completeopt=menu
 
 " Repeat for all other completion commands used ...
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/archive*/*,*/man/*
@@ -568,10 +570,11 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> <C-]> <plug>(lsp-definition)
   nmap <buffer> <C-]> <plug>(lsp-definition)
   nmap <buffer> <leader>r <plug>(lsp-rename)
-  nmap <buffer> <leader>s <plug>(lsp-document-symbol)
-  nmap <buffer> <leader>d <plug>(lsp-document-diagnostics)
-  nmap <buffer> <leader>o <plug>(lsp-document-format)
-  vmap <buffer> <leader>o <plug>(lsp-document-range-format)
+  nmap <buffer> <leader>ds <plug>(lsp-document-symbol)
+  nmap <buffer> <leader>dd <plug>(lsp-document-diagnostics)
+  nmap <buffer> <leader>df <plug>(lsp-document-format)
+  vmap <buffer> <leader>df <plug>(lsp-document-range-format)
+  nmap <buffer> <leader>dr <plug>(lsp-references)
   nmap <buffer> <leader>h <plug>(lsp-hover)
   nmap <buffer> ]d <plug>(lsp-next-diagnostic)
   nmap <buffer> ]w <plug>(lsp-next-warning)
@@ -620,13 +623,17 @@ augroup slimebindings
   let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
   let g:slime_dont_ask_default = 1
   let g:slime_python_ipython = 1
+
   let interrupt_escape_sequence = "\x03"
   let clearline_escape_sequence = "\<Esc>^Di"
-  autocmd Filetype r,rmarkdown,python xmap   <localleader><localleader>   :call slime#send(clearline_escape_sequence)<CR><Plug>SlimeRegionSend
-  autocmd Filetype r,rmarkdown,python nmap   <localleader>                :call slime#send(clearline_escape_sequence)<CR><Plug>SlimeMotionSend
-  autocmd Filetype r,rmarkdown,python nmap   <localleader><localleader>   :call slime#send(clearline_escape_sequence)<CR><Plug>SlimeLineSend1
+
+  autocmd Filetype r,rmarkdown,python xmap   <silent> <localleader><localleader>   :call slime#send(clearline_escape_sequence)<CR>
+        \<Plug>SlimeRegionSend
+  autocmd Filetype r,rmarkdown,python nmap   <silent> <localleader>                :call slime#send(clearline_escape_sequence)<CR>
+        \<Plug>SlimeMotionSend
+  autocmd Filetype r,rmarkdown,python nmap   <silent> <localleader><localleader>   :call slime#send(clearline_escape_sequence)<CR>
+        \<Plug>SlimeLineSend1
   autocmd Filetype r,rmarkdown,python nmap   <silent> <localleader>c      :call slime#send(interrupt_escape_sequence)<CR>
-  autocmd Filetype r                  nmap   <silent> <localleader>s      :call slime#send("source(\"" .  expand('%:p') . "\")\r")<CR>
 augroup end
 
 function! SendRCommand()

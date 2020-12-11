@@ -38,4 +38,4 @@ windows:
       # synchronize: after
       panes:
         - nvim
-        - R
+        - radian

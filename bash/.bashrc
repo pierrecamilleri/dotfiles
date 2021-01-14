@@ -128,3 +128,6 @@ xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 # Add base16-prompt-toolkit colorscheme to PYTHONPATH
 export PYTHONPATH=$PYTHONPATH:~/.ipython/base16-prompt-toolkit/
+
+export VISUAL=vim
+export EDITOR="$VISUAL"

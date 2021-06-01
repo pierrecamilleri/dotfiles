@@ -13,6 +13,7 @@ Plugin 'morhetz/gruvbox'
 Plugin 'chriskempson/base16-vim'
 
 " fzf
+Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 
 " Linting
@@ -255,6 +256,7 @@ set path+=**
 set runtimepath+=~/.fzf
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_buffers_jump = 1
+let g:fzf_layout = { 'down': '40%' }
 
 command! -bang -nargs=* -complete=dir FzfFiles
   \ call fzf#vim#files(".", {'options': ['--query=<args> ', "--exact"]}, <bang>0)

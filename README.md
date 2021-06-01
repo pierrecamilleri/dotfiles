@@ -5,7 +5,7 @@ How to install
 ```bash
 # clone this repo into ~/dotfiles
 cd ~
-git clone JazzyPierrot/dotfiles
+git clone https://github.com/JazzyPierrot/dotfiles.git
 sudo apt install stow
 ```
 

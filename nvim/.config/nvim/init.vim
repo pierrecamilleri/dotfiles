@@ -34,7 +34,7 @@ Plugin 'chrisbra/NrrwRgn'
 " stan
 Plugin 'eigenfoo/stan-vim'
 
-" html
+" html tag closing with > (or >>)
 Plugin 'alvan/vim-closetag'
 
 " Git wrapper
@@ -626,9 +626,12 @@ augroup slimebindings
   let g:slime_dont_ask_default = 1
   let g:slime_python_ipython = 1
 
-  let interrupt_escape_sequence = "\x03"
-  let clearline_escape_sequence = "\<Esc>^Di"
+  let interrupt_escape_sequence = "\x03" " Ascii for CTRL-C
+  let clearline_escape_sequence = "\<Esc>ggdGi" " Escape, clear text, go to insert mode (vim mode)
 
+  " Attempt with bracketed paste, i.e. -p option in tmux-paste.
+  " let interrupt_escape_sequence = "\e[201~\x03\e[200~" " Ascii for CTRL-C
+  " let clearline_escape_sequence = "\e[201~\<Esc>ggdGi\e[200~" " Escape, clear text, go to insert mode (vim mode)
   autocmd Filetype r,rmarkdown,python xmap   <silent> <localleader><localleader>   :call slime#send(clearline_escape_sequence)<CR>
         \<Plug>SlimeRegionSend
   autocmd Filetype r,rmarkdown,python nmap   <silent> <localleader>                :call slime#send(clearline_escape_sequence)<CR>
@@ -684,4 +687,23 @@ function! EslintFix()
     edit! %
 endfunction
 command! EslintFix :call EslintFix()
+" }}}
+
+" Emojis {{{
+abbreviate :green: 🟢
+abbreviate :blue: 🔵
+abbreviate :red: 🔴
+abbreviate :white: ⚪
+" }}}
+
+" Copy without linebreaks {{{
+function CopyNoLinebreak()
+  let tw = &l:textwidth
+  let &textwidth=10000
+  normal! gggqG
+  normal! gg"+yG
+  let &textwidth=tw
+  norm gggqG
+endfunction
+command! CopyNoLinebreak :call CopyNoLinebreak()
 " }}}

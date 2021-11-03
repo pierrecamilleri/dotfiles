@@ -5,6 +5,8 @@ if exists("b:did_ftplugin")
 endif
 let b:did_ftplugin = 1
 
+inoremap %% %>%
+inoremap << <-
 
 nmap <silent> <leader>s :call slime#send("source(\"" .  expand('%:p') . "\")\r")<CR>
 nmap <silent> <leader>t :call slime#send(interrupt_escape_sequence)<CR>

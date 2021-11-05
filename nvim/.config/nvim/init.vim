@@ -62,7 +62,7 @@ Plugin 'mattn/calendar-vim'
 
 
 " Latex
-Plugin 'xuhdev/vim-latex-live-preview'
+" Plugin 'xuhdev/vim-latex-live-preview'
 Plugin 'lervag/vimtex'
 
 " Most recently used files
@@ -88,8 +88,8 @@ Plugin 'majutsushi/tagbar'
 " Plugin 'vim-scripts/DfrankUtil'
 
 " Nice statusline
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+" Plugin 'vim-airline/vim-airline'
+" Plugin 'vim-airline/vim-airline-themes'
 
 " Comments
 Plugin 'tpope/vim-commentary'
@@ -115,7 +115,7 @@ Plugin 'leafgarland/typescript-vim'
 
 " Python
 " Syntax highlighting
-Plugin 'Vimjas/vim-python-pep8-indent'
+" Plugin 'Vimjas/vim-python-pep8-indent'
 
 " Send code to interpreter
 Plugin 'jpalardy/vim-slime'

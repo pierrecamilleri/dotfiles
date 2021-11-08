@@ -24,7 +24,10 @@ apt-get install tmuxinator
 stow tmux
 stow tmuxinator
 
-
 # R and Radian
 pip3 install radian
 stow radian
+
+# Install i3
+apt-get install i3
+stow i3

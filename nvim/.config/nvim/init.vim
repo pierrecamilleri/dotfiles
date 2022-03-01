@@ -164,16 +164,6 @@ map Q <Nop>
 nnoremap <SPACE> <Nop>
 " Escape mapped on caps lock in .bashrc
 
-" training the fingers
-noremap <down> <Nop>
-noremap <up> <Nop>
-noremap <left> <Nop>
-noremap <right> <Nop>
-
-inoremap <down> <Nop>
-inoremap <up> <Nop>
-inoremap <left> <Nop>
-inoremap <right> <Nop>
 " }}}
 
 " Display options {{{
@@ -231,6 +221,7 @@ nnoremap <C-W><L> <C-W><C-S-L>
 nnoremap <C-W><H> <C-W><C-S-H>
 
 set hidden
+
 " go to alternate buffer
 nnoremap _ :b#<CR>
 
@@ -276,7 +267,7 @@ nnoremap <leader>t :FzfTags<CR>
 nnoremap <C-]> g<C-]>
 " }}}
 
-" Vimscript file settings {{{
+" Vimscript file settings / folding {{{
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
@@ -292,7 +283,7 @@ let g:vim_markdown_strikethrough = 1
 
 let g:pandoc#biblio#bibs = ["/home/pierre/Documents/biblio/Ma bibliothèque.bib"]
 let g:pandoc#biblio#use_bibtool  = 1
-let g:pandoc#modules#disabled = ["folding", "spell"]
+let g:pandoc#modules#disabled = ["folding", "spell", "keyboard", "formatting"]
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#filetypes#handled = ["pandoc", "rst", "textile", "markdown"]
 let g:pandoc#keyboard#use_default_mappings = 0
@@ -446,13 +437,6 @@ if has('nvim')
 endif
 " }}}
 
-" Source nvimbepo.vim if bepo keyboad layout {{{
-" If bepo mapping at nvim starting.
-if !empty(system("setxkbmap -print 2> /dev/null | grep bepo"))
-  source ~/.config/nvim/nvimbepo.vim
-endif
-" }}}
-
 " File browser {{{
 " -- netrw
 
@@ -508,10 +492,7 @@ augroup END
 let g:vimwiki_list = [{
   \ 'path': '~/vimwiki/',
   \ 'auto_tags': 1,
-  \ 'auto_diray_index': 1,
-  \ 'template_path': '~/vimwiki/templates',
-  \ 'template_default': 'default',
-  \ 'template_ext': '.html'
+  \ 'auto_diray_index': 1
  \ }]
 
 let g:vimwiki_auto_export = 0

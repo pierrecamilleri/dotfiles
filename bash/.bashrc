@@ -92,7 +92,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # make tab cycle through commands after listing
 bind '"\t":menu-complete'
@@ -100,7 +99,6 @@ bind "set show-all-if-ambiguous on"
 bind "set completion-ignore-case on"
 bind "set menu-complete-display-prefix on"
 
-export FZF_DEFAULT_OPTS="--exact"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -117,6 +115,9 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+set -o vi
+export FZF_DEFAULT_OPTS="--exact"
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f ~/.fzf.colors ] && source ~/.fzf.colors
 
 export NVM_DIR="$HOME/.nvm"
@@ -129,5 +130,10 @@ xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 # Add base16-prompt-toolkit colorscheme to PYTHONPATH
 export PYTHONPATH=$PYTHONPATH:~/.ipython/base16-prompt-toolkit/
 
-export VISUAL=vim
+# set PATH so it includes user's private bin if it exists
+if [ -d "/usr/local/bin" ] ; then
+    PATH="/usr/local/bin:$PATH"
+fi
+
+export VISUAL=nvim
 export EDITOR="$VISUAL"

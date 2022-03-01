@@ -1,3 +1,6 @@
+# First, include any systemwide bindings and variable
+# assignments from /etc/Inputrc
+$include /etc/Inputrc
 
 # Use vi for bash, + dans ~/.inputrc
 set editing-mode vi
@@ -13,3 +16,29 @@ set vi-ins-mode-string "\1\e[6 q\2"
 # Afficher les processus en arrière plan avec maj-j
 "\e[j": "jobs\n"
 
+#options générales
+set editing-mode vi
+
+#configuration du clavier
+$if mode=vi
+   set keymap vi-command
+   "s": history-search-backward
+   "t": history-search-forward
+   "h": vi-change-char
+   "L": vi-replace
+   "k": vi-subst
+   "j": vi-change-to
+   "dd": kill-whole-line
+   set keymap vi-move
+   "c": backward-char
+   "r": forward-char
+   "f": vi-char-search
+   "w": vi-prev-word
+   set keymap vi-insert
+   #si une touche ne marche pas en mode insert, la mapper en :self-insert
+   #,, comme alias d’escape pour quitter le mode insertion
+   ",,": vi-movement-mode
+   "\e[A": history-search-backward
+   "\e[B": history-search-forward
+
+$endif

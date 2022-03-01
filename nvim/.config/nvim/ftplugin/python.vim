@@ -13,3 +13,5 @@ nmap <silent> <leader>s :call slime#send(interrupt_escape_sequence)<CR>
 " Run tests which are discoverable
 nmap <silent> <leader>t :call slime#send(interrupt_escape_sequence)<CR>
       \:call slime#send("!python -m unittest\r")<CR>
+
+autocmd BufWritePre <buffer> LspDocumentFormatSync

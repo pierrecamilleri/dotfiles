@@ -7,8 +7,11 @@
 noremap c h
 noremap r l
 " {ts} = « haut / bas »
-noremap t j
-noremap s k
+" {K} = « Substitue »          (k = caractère, K = ligne)
+" {J} = « Jusqu'à »            (j = suivant, J = précédant)
+set langmap=tTsSjJkK;jJkKtTsS
+" noremap t j
+" noremap s k
 " {CR} = « haut / bas de l'écran »
 noremap C H
 noremap R L
@@ -17,34 +20,21 @@ noremap <C-j> J
 " Join in insert mode
 inoremap <C-j> <C-o>J
 
-noremap S K
-" Corollaire : repli suivant / précédent
-noremap zs zj
-noremap zt zk
-
-" Désambiguation de {g}
-" —————————————————————
-" ligne écran précédente / suivante (à l'intérieur d'une phrase)
-noremap gs gk
-noremap gt gj
-
 " {HJKL} <- [CTSR]
 " ————————————————
-" {J} = « Jusqu'à »            (j = suivant, J = précédant)
-noremap j t
-noremap J T
 " {L} = « Change »             (l = attend un mvt, L = jusqu'à la fin de ligne)
 noremap l c
 noremap L C
+
+" adapt vim surround shortcuts
+unmap cg
+unmap cG
+map lg <Plug>Csurround
+map lG <Plug>CSurround
+
 " {H} = « Remplace »           (h = un caractère slt, H = reste en « Remplace »)
 noremap h r
 noremap H R
-" {K} = « Substitue »          (k = caractère, K = ligne)
-noremap k s
-noremap K S
-" Corollaire : correction orthographique
-noremap ]k ]s
-noremap [k [s
 
 " redo
 " noremap <C-l> <C-r>
@@ -107,3 +97,5 @@ nnoremap <silent> <right> :TmuxNavigateRight   <cr>
 "" Move split
 "nnoremap <C-W><< :vertical resize -10<CR>
 "noremap <C-W>>> :vertical resize +10<CR
+inoremap <expr> <C-t> pumvisible() ? "\<C-N>" : "\<C-t>"
+inoremap <expr> <C-s> pumvisible() ? "\<C-P>" : "\<C-s>"

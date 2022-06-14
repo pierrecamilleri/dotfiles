@@ -1,6 +1,4 @@
 unmap cr
-unmap cs
-unmap cS
 
 " Source nvimbepo.vim if bepo keyboad layout {{{
 " If bepo mapping at nvim starting.

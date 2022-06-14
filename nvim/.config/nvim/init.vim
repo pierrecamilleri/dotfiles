@@ -35,7 +35,7 @@ Plugin 'chrisbra/NrrwRgn'
 Plugin 'eigenfoo/stan-vim'
 
 " html tag closing with > (or >>)
-Plugin 'alvan/vim-closetag'
+" Plugin 'alvan/vim-closetag'
 
 " Git wrapper
 Plugin 'tpope/vim-fugitive'
@@ -124,6 +124,10 @@ Plugin 'jpalardy/vim-slime'
 " Don't know how to use it, bug should dig into it
 Plugin 'fatih/vim-go' , { 'do': ':GoInstallBinaries' }
 
+
+" Distraction free writing
+Plugin 'junegunn/goyo.vim'
+
 " Does not work as I want: need to read doc
 " Plugin 'roxma/nvim-yarp'
 " Plugin 'ncm2/ncm2'
@@ -132,9 +136,6 @@ Plugin 'fatih/vim-go' , { 'do': ':GoInstallBinaries' }
 
 " Plugin 'ncm2/ncm2-ultisnips'
 " Plugin 'sirver/UltiSnips'
-
-" Neomutt ? not used anymore
-" Plugin 'neomutt/neomutt.vim'
 
 " Changes since last save
 " Plugin 'vim-scripts/diffchanges.vim'
@@ -172,7 +173,7 @@ nnoremap <SPACE> <Nop>
 syntax on
 
 " Preferred default settings.
-set nowrap
+set wrap
 set nohlsearch
 
 " Line numbering
@@ -274,7 +275,7 @@ augroup filetype_vim
 augroup END "}}}
 
 " Markdown and Pandoc options {{{
-au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown comments=fb:>,fb:*,fb:+,fb:- formatoptions+=taw
+au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown comments=fb:>,fb:*,fb:+,fb:- formatoptions+=tawl
 let g:vim_markdown_folding_level = 2
 set conceallevel=0
 let g:vim_markdown_conceal = 0
@@ -477,6 +478,9 @@ nnoremap <silent> <leader>hW :match none<cr>
 
 nnoremap <silent> <leader>hs :set hlsearch<cr>
 nnoremap <silent> <leader>hS :set nohlsearch<cr>
+
+set listchars=nbsp:·,tab:▸\ ,
+set list
 " }}}
 
 " Trim trailing whitespace {{{
@@ -519,6 +523,21 @@ augroup clean_fugitive_buffers
 augroup END
 " }}}
 
+"" Vim surround {{{
+let g:surround_no_mappings=1
+let g:surround_no_insert_mappings=1
+nmap dg  <Plug>Dsurround
+nmap cg  <Plug>Csurround
+nmap cG  <Plug>CSurround
+nmap yg  <Plug>Ysurround
+nmap yG  <Plug>YSurround
+nmap ygg <Plug>Yssurround
+nmap yGg <Plug>YSsurround
+nmap yGG <Plug>YSsurround
+xmap G   <Plug>VSurround
+xmap gG  <Plug>VgSurround
+" }}}
+
 "" Citations {{{
 let $FZF_BIBTEX_CACHEDIR = '/home/pierre/Documents/biblio/'
 let $FZF_BIBTEX_SOURCES = '/home/pierre/Documents/biblio/Ma bibliothèque.bib'
@@ -550,6 +569,9 @@ nnoremap <silent> <leader>m :call fzf#run({
 function! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
   setlocal signcolumn=auto
+  let g:lsp_hover_ui="preview"
+  let g:lsp_document_code_action_signs_enabled=0
+  let g:lsp_diagnostics_virtual_text_enabled=0
   nmap <buffer> <C-]> <plug>(lsp-definition)
   nmap <buffer> <C-]> <plug>(lsp-definition)
   nmap <buffer> <leader>r <plug>(lsp-rename)
@@ -567,8 +589,6 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> [w <plug>(lsp-previous-warning)
   nmap <buffer> [e <plug>(lsp-previous-error)
   nmap <buffer> [r <plug>(lsp-previous-reference)
-  nmap <buffer> <C-W><C-Z> <plug>(lsp-preview-close)
-  nmap <buffer> <C-W>z <plug>(lsp-preview-close)
 endfunction
 
 " augroup autoformat
@@ -687,4 +707,62 @@ function CopyNoLinebreak()
   norm gggqG
 endfunction
 command! CopyNoLinebreak :call CopyNoLinebreak()
+" }}}
+
+" Close html tags with <\ {{{
+function! InsertCloseTag()
+  " inserts the appropriate closing HTML tag
+  " may require ignorecase to be set, or to type HTML tags in exactly the same case
+  if &filetype == 'html' || &filetype=='php' || &filetype=='xml'
+
+    " list of tags which shouldn't be closed:
+    let UnaryTags = ' Area Base Br br BR DD dd Dd DT dt Dt HR hr Hr Img img IMG input INPUT Input li Li LI link LINK Link meta Meta p P Param param PARAM '
+
+    " remember current position:
+    normal mz
+    normal mw
+
+    " loop backwards looking for tags:
+    let Found = 0
+	let NBL = 0
+    while Found == 0
+		 let NBL = NBL+1
+		 if NBL == 50
+			 break
+		endif
+
+      " find the previous <, then go forwards one character and grab the first
+      " character plus the entire word:
+      execute "normal ?\<LT>\<CR>l"
+      normal "zyl
+      let Tag = expand('<cword>')
+
+      " if this is a closing tag, skip back to its matching opening tag:
+      if @z == '/'
+        execute "normal ?\<LT>" . Tag . "\<CR>"
+
+      " if this is a unary tag, then position the cursor for the next
+      " iteration:
+      elseif match(UnaryTags, ' ' . Tag . ' ') > 0
+        normal h
+
+      " otherwise this is the tag that needs closing:
+      else
+        let Found = 1
+
+      endif
+    endwhile " not yet found match
+
+    " create the closing tag and insert it:
+    let @z = '</' . Tag . '>'
+    normal `z"zp
+	normal `w
+	execute "normal />\<cr>"
+  else " filetype is not HTML
+	normal mw
+    let @z = '</'
+    normal "zp`wll
+  endif " check on filetype
+endfunction " InsertCloseTag()
+imap <lt>/ <Esc>:call InsertCloseTag()<CR>
 " }}}

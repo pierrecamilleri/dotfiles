@@ -109,16 +109,16 @@ bindsym $mod+q focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:applications"
-set $ws2 "2:communication"
-set $ws3 "3:browser"
-set $ws4 "4:terminal"
-set $ws5 "5:wiki"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+set $ws1 "1:focus"
+set $ws2 "2:focus bis"
+set $ws3 "3:calendar"
+set $ws4 "4:viso"
+set $ws5 "5:email"
+set $ws6 "6:chat"
+set $ws7 "7:browser"
+set $ws8 "8:browser bis"
+set $ws9 "9:terminal"
+set $ws10 "10:terminal bis"
 
 # switch to workspace
 bindsym $mod+mod2+KP_1 workspace number $ws1
@@ -131,6 +131,8 @@ bindsym $mod+mod2+KP_7 workspace number $ws7
 bindsym $mod+mod2+KP_8 workspace number $ws8
 bindsym $mod+mod2+KP_9 workspace number $ws9
 bindsym $mod+mod2+KP_0 workspace number $ws10
+
+bindsym $mod+b workspace back_and_forth
 
 # move focused container to workspace
 bindsym $mod+mod2+Shift+KP_End move container to workspace number $ws1; workspace $ws1
@@ -194,7 +196,7 @@ bar {
 }
 
 # background
-exec --no-startup-id feh --bg-scale ~/dotfiles/i3/wallpaper.png
+exec --no-startup-id feh --bg-fill ~/dotfiles/i3/wallpaper.png --bg-fill ~/dotfiles/i3/wallpaper.png
 
 # class                 border  backgr.  text    indicator child_border
 client.focused          #1f5271 #1f5271 #eec573 #2e9ef4   #1f5271
@@ -206,14 +208,19 @@ focus_on_window_activation focus
 workspace $ws1 output HDMI-2 primary
 workspace $ws2 output HDMI-2 primary
 workspace $ws3 output HDMI-2 primary
-workspace $ws4 output primary
-workspace $ws5 output primary
+workspace $ws4 output HDMI-2 primary
+workspace $ws5 output HDMI-2 primary
+workspace $ws6 output HDMI-2 primary
+workspace $ws7 output HDMI-2 primary
+workspace $ws8 output HDMI-2 primary
+workspace $ws9 output primary
+workspace $ws0 output primary
 
 # Change monitor for active workspace
 bindsym $mod+m move workspace to output left
 
 # Automatically open applications
-exec i3-msg "workspace $ws5; exec gnome-terminal -e \"nvim ~/vimwiki/index.wiki\"; workspace $ws3; exec firefox; workspace $ws4; exec gnome-terminal;"
+exec i3-msg "workspace $ws9; exec gnome-terminal; workspace $ws7; exec firefox; workspace $ws6; workspace $ws5; exec gnome-terminal -e \"aerc\""
 
 # Numlock on at startup
 exec_always --no-startup-id numlockx on

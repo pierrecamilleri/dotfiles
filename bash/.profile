@@ -26,14 +26,24 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-# set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/go/bin" ] ; then
     PATH="$HOME/go/bin:$PATH"
 fi
 
-# set PATH so it includes user's private bin if it exists
 if [ -d "/usr/local/go/bin" ] ; then
     PATH="/usr/local/go/bin:$PATH"
 fi
 
+if [ -d "/home/pierre/.nvm/versions/node/v16.14.2/lib/node_modules" ] ; then
+    PATH="/home/pierre/.nvm/versions/node/v16.14.2/lib/node_modules:$PATH"
+fi
 
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/apps/context/tex/texmf-linux-64/bin/" ] ; then
+    PATH="$HOME/apps/context/tex/texmf-linux-64/bin/:$PATH"
+fi
+
+export PATH="$HOME/.poetry/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

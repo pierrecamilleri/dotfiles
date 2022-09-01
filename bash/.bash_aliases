@@ -12,6 +12,7 @@ alias look="csvlook -I | less -S"
 #### VIM USE ######
 # Read-only nvim
 alias view="nvim -M"
+alias paste="xclip -selection c"
 
 # Open man pages with nvim
 export MANPAGER="nvim -c 'set ft=man' -"
@@ -49,3 +50,9 @@ fi
 
 alias tx=tmuxinator
 alias ipython=ipython3
+
+alias o=xdg-open
+alias v=nvim
+
+alias python=python3
+alias python3=python3

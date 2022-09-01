@@ -9,9 +9,20 @@ noremap r l
 " {ts} = « haut / bas »
 " {K} = « Substitue »          (k = caractère, K = ligne)
 " {J} = « Jusqu'à »            (j = suivant, J = précédant)
-set langmap=tTsSjJkK;jJkKtTsS
-" noremap t j
-" noremap s k
+" set langmap=tTsSjJkK;jJkKtTsS > breaks lots of stuff including macros
+noremap t j
+noremap j t
+noremap T J
+noremap J T
+noremap s k
+noremap k s
+noremap S K
+noremap K S
+
+" Navigate between folds
+noremap zt zj
+noremap zs zk
+
 " {CR} = « haut / bas de l'écran »
 noremap C H
 noremap R L

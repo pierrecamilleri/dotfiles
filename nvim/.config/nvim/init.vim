@@ -126,7 +126,6 @@ Plugin 'leafgarland/typescript-vim'
 Plugin 'jpalardy/vim-slime'
 
 " Go plugin
-" Don't know how to use it, bug should dig into it
 Plugin 'fatih/vim-go' , { 'do': ':GoInstallBinaries' }
 
 

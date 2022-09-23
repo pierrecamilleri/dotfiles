@@ -12,7 +12,7 @@ alias look="csvlook -I | less -S"
 #### VIM USE ######
 # Read-only nvim
 alias view="nvim -M"
-alias paste="xclip -selection c"
+alias copy="xclip -selection c"
 
 # Open man pages with nvim
 export MANPAGER="nvim -c 'set ft=man' -"

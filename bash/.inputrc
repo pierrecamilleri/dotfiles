@@ -40,5 +40,4 @@ $if mode=vi
    ",,": vi-movement-mode
    "\e[A": history-search-backward
    "\e[B": history-search-forward
-
 $endif

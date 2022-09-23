@@ -58,6 +58,9 @@ Plugin 'adolenc/vim-textobj-toplevel' " aT
 Plugin 'kana/vim-textobj-indent' " ai
 Plugin 'bps/vim-textobj-python' " af
 
+" LSP configuration
+Plugin 'neovim/nvim-lspconfig'
+
 
 
 " Wiki
@@ -107,10 +110,10 @@ Plugin 'christoomey/vim-tmux-navigator'
 " Syntax checking / Now Ale
 " Plugin 'vim-syntastic/syntastic'
 
-" vim-lsp - language server protocol
-Plugin 'prabirshrestha/async.vim'
-Plugin 'prabirshrestha/vim-lsp'
-Plugin 'mattn/vim-lsp-settings'
+" " vim-lsp - language server protocol
+" Plugin 'prabirshrestha/async.vim'
+" Plugin 'prabirshrestha/vim-lsp'
+" Plugin 'mattn/vim-lsp-settings'
 
 " EditorConfig file support
 Plugin 'editorconfig/editorconfig-vim'
@@ -124,10 +127,6 @@ Plugin 'leafgarland/typescript-vim'
 
 " Send code to interpreter
 Plugin 'jpalardy/vim-slime'
-
-" Go plugin
-Plugin 'fatih/vim-go' , { 'do': ':GoInstallBinaries' }
-
 
 " Distraction free writing
 Plugin 'junegunn/goyo.vim'
@@ -267,9 +266,6 @@ nnoremap <leader>l :FzfBLines<SPACE>
 
 " Search through tags
 nnoremap <leader>t :FzfTags<CR>
-
-" If several tags are available, ask which one to choose
-nnoremap <C-]> g<C-]>
 " }}}
 
 " Vimscript file settings / folding {{{
@@ -570,30 +566,96 @@ nnoremap <silent> <leader>m :call fzf#run({
 " }}}
 
 " vim-lsp config {{{
-function! s:on_lsp_buffer_enabled() abort
-  setlocal omnifunc=lsp#complete
-  setlocal signcolumn=auto
-  let g:lsp_hover_ui="preview"
-  let g:lsp_document_code_action_signs_enabled=0
-  let g:lsp_diagnostics_virtual_text_enabled=0
-  nmap <buffer> <C-]> <plug>(lsp-definition)
-  nmap <buffer> <C-]> <plug>(lsp-definition)
-  nmap <buffer> <leader>r <plug>(lsp-rename)
-  nmap <buffer> <leader>ds <plug>(lsp-document-symbol)
-  nmap <buffer> <leader>dd <plug>(lsp-document-diagnostics)
-  nmap <buffer> <leader>df <plug>(lsp-document-format)
-  vmap <buffer> <leader>df <plug>(lsp-document-range-format)
-  nmap <buffer> <leader>dr <plug>(lsp-references)
-  nmap <buffer> <leader>h <plug>(lsp-hover)
-  nmap <buffer> ]d <plug>(lsp-next-diagnostic)
-  nmap <buffer> ]w <plug>(lsp-next-warning)
-  nmap <buffer> ]e <plug>(lsp-next-error)
-  nmap <buffer> ]r <plug>(lsp-next-reference)
-  nmap <buffer> [d <plug>(lsp-previous-diagnostic)
-  nmap <buffer> [w <plug>(lsp-previous-warning)
-  nmap <buffer> [e <plug>(lsp-previous-error)
-  nmap <buffer> [r <plug>(lsp-previous-reference)
-endfunction
+lua << EOF
+-- Mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.keymap.set('n', '<localleader>f', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<localleader>q', vim.diagnostic.setqflist, opts)
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', '<C-]>', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', '<C-}>', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<localleader>h', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', '<localleader>H', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<localleader>i', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', '<localleader>r', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<localleader>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', '<localleader>l', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', '<localleader>f', vim.lsp.buf.formatting, bufopts)
+end
+require('lspconfig').gopls.setup{
+  on_attach = on_attach,
+   settings = {
+	      gopls = {
+		      analyses = {
+		        unusedparams = true,
+            unusedwrite = true,
+            unusedvariable = true,
+		        shadow = true,
+            ST1000 = true,
+            ST1003 = true,
+            ST1016 = true,
+            ST1020 = true,
+            ST1021 = true,
+            ST1022 = true,
+            ST1023 = true,
+		     },
+		     staticcheck = true,
+		    },
+	    },
+}
+function go_org_imports(wait_ms)
+  local params = vim.lsp.util.make_range_params()
+  params.context = {only = {"source.organizeImports"}}
+  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, wait_ms)
+  for cid, res in pairs(result or {}) do
+    for _, r in pairs(res.result or {}) do
+      if r.edit then
+        local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+        vim.lsp.util.apply_workspace_edit(r.edit, enc)
+      end
+    end
+  end
+end
+EOF
+" }}}
+
+" function! s:on_lsp_buffer_enabled() abort
+"   setlocal omnifunc=lsp#complete
+"   setlocal signcolumn=auto
+"   let g:lsp_hover_ui="preview"
+"   let g:lsp_document_code_action_signs_enabled=0
+"   let g:lsp_diagnostics_virtual_text_enabled=0
+"   nmap <buffer> <C-]> <plug>(lsp-definition)
+"   nmap <buffer> <C-]> <plug>(lsp-definition)
+"   nmap <buffer> <leader>r <plug>(lsp-rename)
+"   nmap <buffer> <leader>ds <plug>(lsp-document-symbol)
+"   nmap <buffer> <leader>dd <plug>(lsp-document-diagnostics)
+"   nmap <buffer> <leader>df <plug>(lsp-document-format)
+"   vmap <buffer> <leader>df <plug>(lsp-document-range-format)
+"   nmap <buffer> <leader>dr <plug>(lsp-references)
+"   nmap <buffer> <leader>h <plug>(lsp-hover)
+"   nmap <buffer> ]d <plug>(lsp-next-diagnostic)
+"   nmap <buffer> ]w <plug>(lsp-next-warning)
+"   nmap <buffer> ]e <plug>(lsp-next-error)
+"   nmap <buffer> ]r <plug>(lsp-next-reference)
+"   nmap <buffer> [d <plug>(lsp-previous-diagnostic)
+"   nmap <buffer> [w <plug>(lsp-previous-warning)
+"   nmap <buffer> [e <plug>(lsp-previous-error)
+"   nmap <buffer> [r <plug>(lsp-previous-reference)
+" endfunction
 
 " augroup autoformat
 "   au!

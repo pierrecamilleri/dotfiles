@@ -56,3 +56,11 @@ alias v=nvim
 
 alias python=python3
 alias python3=python3
+
+alias pmd="/home/pierre/pmd-bin-6.50.0/bin/run.sh pmd"
+alias cpd="/home/pierre/pmd-bin-6.50.0/bin/run.sh cpd"
+
+alias docker-compose="docker compose"
+
+# Mostly touched files. Start with them for a refacto !
+alias mostlytouched="git log --format=format: --name-only --since=12.month| egrep -v '^$' | sort | uniq -c | sort -nr | head -50"

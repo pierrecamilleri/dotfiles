@@ -142,6 +142,10 @@ Plugin 'junegunn/goyo.vim'
 
 " Changes since last save
 " Plugin 'vim-scripts/diffchanges.vim'
+"
+
+" Toggle bools and more
+Plugin 'AndrewRadev/switch.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -534,8 +538,8 @@ nmap yG  <Plug>YSurround
 nmap ygg <Plug>Yssurround
 nmap yGg <Plug>YSsurround
 nmap yGG <Plug>YSsurround
-xmap G   <Plug>VSurround
-xmap gG  <Plug>VgSurround
+xmap yg   <Plug>VSurround
+xmap yGG  <Plug>VgSurround
 " }}}
 
 "" Citations {{{
@@ -567,6 +571,8 @@ nnoremap <silent> <leader>m :call fzf#run({
 
 " vim-lsp config {{{
 lua << EOF
+local lspconfig = require('lspconfig')
+
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
@@ -574,6 +580,7 @@ vim.keymap.set('n', '<localleader>f', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<localleader>q', vim.diagnostic.setqflist, opts)
+
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -584,7 +591,7 @@ local on_attach = function(client, bufnr)
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
   vim.keymap.set('n', '<C-]>', vim.lsp.buf.definition, bufopts)
   vim.keymap.set('n', '<C-}>', vim.lsp.buf.type_definition, bufopts)
   vim.keymap.set('n', '<localleader>h', vim.lsp.buf.hover, bufopts)
@@ -595,7 +602,28 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<localleader>l', vim.lsp.buf.references, bufopts)
   vim.keymap.set('n', '<localleader>f', vim.lsp.buf.formatting, bufopts)
 end
-require('lspconfig').gopls.setup{
+
+
+lspconfig.pyright.setup{
+  on_attach = on_attach,
+  -- to make it work well with poetry
+  -- credit Ian Liu Rodrigues
+  -- https://www.reddit.com/r/neovim/comments/wls43h/pyright_lsp_configuration_for_python_poetry/ijvegs7/?context=8&depth=9
+  on_new_config = function(config, root_dir)
+    local env = vim.trim(vim.fn.system('cd "' .. root_dir .. '"; poetry env info -p 2>/dev/null'))
+    if string.len(env) > 0 then
+      config.settings.python.pythonPath = env .. '/bin/python'
+    end
+  end
+}
+
+  lspconfig.r_language_server.setup{
+  on_attach  = on_attach
+}
+
+lspconfig.yamlls.setup {}
+
+lspconfig.gopls.setup{
   on_attach = on_attach,
    settings = {
 	      gopls = {
@@ -616,6 +644,8 @@ require('lspconfig').gopls.setup{
 		    },
 	    },
 }
+
+
 function go_org_imports(wait_ms)
   local params = vim.lsp.util.make_range_params()
   params.context = {only = {"source.organizeImports"}}

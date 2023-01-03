@@ -34,8 +34,12 @@ if [ -d "/usr/local/go/bin" ] ; then
     PATH="/usr/local/go/bin:$PATH"
 fi
 
-if [ -d "/home/pierre/.nvm/versions/node/v16.14.2/lib/node_modules" ] ; then
-    PATH="/home/pierre/.nvm/versions/node/v16.14.2/lib/node_modules:$PATH"
+# if [ -d "/home/pierre/.nvm/versions/node/v16.14.2/bin" ] ; then
+    PATH="/home/pierre/.nvm/versions/node/v16.14.2/bin:$PATH"
+# fi
+
+if [ -d "/home/pierre/.yarn/bin" ] ; then
+    PATH="/home/pierre/.yarn/bin:$PATH"
 fi
 
 # set PATH so it includes user's private bin if it exists

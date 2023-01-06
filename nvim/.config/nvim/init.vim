@@ -147,6 +147,9 @@ Plugin 'junegunn/goyo.vim'
 " Toggle bools and more
 Plugin 'AndrewRadev/switch.vim'
 
+" nvim in firefox
+Plugin 'glacambre/firenvim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -530,16 +533,15 @@ augroup END
 "" Vim surround {{{
 let g:surround_no_mappings=1
 let g:surround_no_insert_mappings=1
-nmap dg  <Plug>Dsurround
-nmap cg  <Plug>Csurround
-nmap cG  <Plug>CSurround
-nmap yg  <Plug>Ysurround
-nmap yG  <Plug>YSurround
-nmap ygg <Plug>Yssurround
-nmap yGg <Plug>YSsurround
-nmap yGG <Plug>YSsurround
-xmap yg   <Plug>VSurround
-xmap yGG  <Plug>VgSurround
+nmap ds  <Plug>Dsurround
+nmap cs  <Plug>Csurround
+nmap cS  <Plug>CSurround
+nmap ys  <Plug>Ysurround
+nmap yS  <Plug>YSurround
+nmap yss <Plug>Yssurround
+nmap ySs <Plug>YSsurround
+nmap ySS <Plug>YSsurround
+xmap S   <Plug>VSurround
 " }}}
 
 "" Citations {{{
@@ -604,16 +606,31 @@ local on_attach = function(client, bufnr)
 end
 
 
+local function get_pyenv_dir()
+  return vim.fn.trim(vim.fn.system 'pyenv which python')
+end
+
+local function get_poetry_dir()
+  return vim.fn.trim(vim.fn.system 'poetry env info -p')
+end
+
+local function get_python_dir(workspace)
+  local poetry_match = vim.fn.glob(path.join(workspace, 'poetry.lock'))
+  if poetry_match ~= '' then
+    return get_poetry_dir() .. '/bin/python'
+  else
+    return get_pyenv_dir()
+  end
+  return ''
+end
+
 lspconfig.pyright.setup{
   on_attach = on_attach,
   -- to make it work well with poetry
   -- credit Ian Liu Rodrigues
   -- https://www.reddit.com/r/neovim/comments/wls43h/pyright_lsp_configuration_for_python_poetry/ijvegs7/?context=8&depth=9
   on_new_config = function(config, root_dir)
-    local env = vim.trim(vim.fn.system('cd "' .. root_dir .. '"; poetry env info -p 2>/dev/null'))
-    if string.len(env) > 0 then
-      config.settings.python.pythonPath = env .. '/bin/python'
-    end
+    config.settings.python.pythonPath = get_python_dir()
   end
 }
 

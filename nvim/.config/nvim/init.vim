@@ -884,5 +884,38 @@ imap <lt>/ <Esc>:call InsertCloseTag()<CR>==a
 " html tag on newline
 nnoremap <leader>at mzvit<Esc>`>a<CR><Esc>`<i<CR><Esc>`z
 
-" automake command
+" automake command {{{
 command AutoMake autocmd BufWritePost <buffer> silent make
+" }}}
+
+" MRU config {{{
+" ignore firenvim files
+let MRU_Exclude_Files = '^/run/user/.*'
+" }}}
+"
+" firenvim config {{{
+let g:firenvim_config = {
+      \ 'localSettings': {'takeover': 'never'}
+      \ }
+
+if exists('g:started_by_firenvim')
+
+" Write every 1 sec
+  let g:timer_started = v:false
+  function! My_Write(timer) abort
+    let g:timer_started = v:false
+    write
+  endfunction
+
+  function! Delay_My_Write() abort
+    if g:timer_started
+      return
+    end
+    let g:timer_started = v:true
+    call timer_start(1000, 'My_Write')
+  endfunction
+
+  au TextChanged * ++nested call Delay_My_Write()
+  au TextChangedI * ++nested call Delay_My_Write()
+endif
+"}}}

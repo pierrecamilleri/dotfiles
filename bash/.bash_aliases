@@ -64,3 +64,6 @@ alias docker-compose="docker compose"
 
 # Mostly touched files. Start with them for a refacto !
 alias mostlytouched="git log --format=format: --name-only --since=12.month| egrep -v '^$' | sort | uniq -c | sort -nr | head -50"
+
+# image in terminal with kitty
+alias icat="kitty +kitten icat"

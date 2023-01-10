@@ -38,10 +38,10 @@ noremap l c
 noremap L C
 
 " adapt vim surround shortcuts
-unmap cg
-unmap cG
-map lg <Plug>Csurround
-map lG <Plug>CSurround
+unmap cs
+unmap cS
+map ls <Plug>Csurround
+map lS <Plug>CSurround
 
 " {H} = « Remplace »           (h = un caractère slt, H = reste en « Remplace »)
 noremap h r

@@ -1,161 +1,136 @@
-" Plugins {{{
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
 " Nice coloscheme
-Plugin 'morhetz/gruvbox'
-Plugin 'chriskempson/base16-vim'
+Plug 'sainnhe/gruvbox-material'
+" Plug 'aktersnurra/no-clown-fiesta.nvim'
+Plug 'chriskempson/base16-vim'
 
 " fzf
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 " Linting
-" Plugin 'w0rp/ale'
+" Plug 'w0rp/ale'
 
 " Directories tree
-Plugin 'tpope/vim-vinegar'
+Plug 'tpope/vim-vinegar'
 
-" Surround
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
+" ----------------------------
+" --- General text editing ---
+" ----------------------------
 
-" R
-" Plugin 'jalvesaq/Nvim-R'
-" Plugin 'mllg/vim-devtools-plugin'
-Plugin 'fvictorio/vim-extract-variable'
-Plugin 'chrisbra/NrrwRgn'
+" Text surrounding
+Plug 'tpope/vim-surround' " ds, cs, ys, S in visual mode
+Plug 'tpope/vim-repeat'
 
-" stan
-Plugin 'eigenfoo/stan-vim'
-
-" html tag closing with > (or >>)
-" Plugin 'alvan/vim-closetag'
-
-" Git wrapper
-Plugin 'tpope/vim-fugitive'
-
-" Markdown
-Plugin 'vim-pandoc/vim-rmarkdown'
-Plugin 'vim-pandoc/vim-pandoc'
-Plugin 'vim-pandoc/vim-pandoc-syntax'
-Plugin 'godlygeek/tabular'
-" Plugin 'plasticboy/vim-markdown'
-" Plugin 'corriander/vim-markdown-indent'
-" Plugin 'JamshedVesuna/vim-markdown-preview'
-
-" Text objects
-Plugin 'kana/vim-textobj-user'
-Plugin 'sgur/vim-textobj-parameter' " a,
-Plugin 'Julian/vim-textobj-variable-segment' " av
-Plugin 'adolenc/vim-textobj-toplevel' " aT
-Plugin 'kana/vim-textobj-indent' " ai
-Plugin 'bps/vim-textobj-python' " af
-
-" LSP configuration
-Plugin 'neovim/nvim-lspconfig'
-
-
-
-" Wiki
-Plugin 'vimwiki/vimwiki'
-Plugin 'noahfrederick/vim-skeleton'
-Plugin 'mattn/calendar-vim'
-
-
-" Latex
-" Plugin 'xuhdev/vim-latex-live-preview'
-Plugin 'lervag/vimtex'
-
-" Most recently used files
-Plugin 'yegappan/mru'
-
-" Substitution helper and camel / snake case coercion
-Plugin 'tpope/vim-abolish'
-
-" Undo history
-Plugin 'mbbill/undotree'
-
-" Wrap and unwrap argument lists
-Plugin 'FooSoft/vim-argwrap'
-
-" Lilypond syntax highlighting
-Plugin 'gisraptor/vim-lilypond-integrator'
-
-" Tags
-Plugin 'majutsushi/tagbar'
-" Auto tagging
-" Plugin 'vim-scripts/indexer.tar.gz'
-" Plugin 'vim-scripts/vimprj'
-" Plugin 'vim-scripts/DfrankUtil'
-
-" Nice statusline
-" Plugin 'vim-airline/vim-airline'
-" Plugin 'vim-airline/vim-airline-themes'
+" Aligning text
+Plug 'godlygeek/tabular' " :'<,'>Tab /...
 
 " Comments
-Plugin 'tpope/vim-commentary'
-
-" Tmux
-Plugin 'christoomey/vim-tmux-navigator'
-
-" Completion
-" Plugin 'ervandew/supertab'
-" Syntax checking / Now Ale
-" Plugin 'vim-syntastic/syntastic'
-
-" " vim-lsp - language server protocol
-" Plugin 'prabirshrestha/async.vim'
-" Plugin 'prabirshrestha/vim-lsp'
-" Plugin 'mattn/vim-lsp-settings'
-
-" EditorConfig file support
-Plugin 'editorconfig/editorconfig-vim'
-
-" Typescript
-Plugin 'leafgarland/typescript-vim'
-
-" Python
-" Syntax highlighting
-" Plugin 'Vimjas/vim-python-pep8-indent'
-
-" Send code to interpreter
-Plugin 'jpalardy/vim-slime'
+Plug 'tpope/vim-commentary' " gc
 
 " Distraction free writing
-Plugin 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim' " :Goyo
 
-" Does not work as I want: need to read doc
-" Plugin 'roxma/nvim-yarp'
-" Plugin 'ncm2/ncm2'
-" Plugin 'gaalcaras/ncm-R'
-" Plugin 'ncm2/ncm2-bufword'
+" Focus on selected region
+Plug 'chrisbra/NrrwRgn' " :NR
 
-" Plugin 'ncm2/ncm2-ultisnips'
-" Plugin 'sirver/UltiSnips'
+"-------------------
+"--- Development ---
+"-------------------
 
-" Changes since last save
-" Plugin 'vim-scripts/diffchanges.vim'
-"
+" ::: Code editing
+
+" Extract variable
+Plug 'fvictorio/vim-extract-variable' " ,ev
 
 " Toggle bools and more
-Plugin 'AndrewRadev/switch.vim'
+Plug 'AndrewRadev/switch.vim' " gs to switch
+
+" Wrap and unwrap argument lists
+Plug 'FooSoft/vim-argwrap' " ,aw
+
+" Text objects
+Plug 'kana/vim-textobj-user'
+Plug 'sgur/vim-textobj-parameter' " a,
+Plug 'Julian/vim-textobj-variable-segment' " av
+Plug 'adolenc/vim-textobj-toplevel' " aT
+Plug 'kana/vim-textobj-indent' " ai
+Plug 'bps/vim-textobj-python', { 'for': 'python' } " af
+Plug 'coachshea/vim-textobj-markdown'
+
+" ::: Specific filetype support
+
+" Typescript
+Plug 'leafgarland/typescript-vim'
+
+" jsonc filetype
+Plug 'neoclide/jsonc.vim'
+
+" stan
+Plug 'eigenfoo/stan-vim'
+
+" Markdown
+Plug 'quarto-dev/quarto-vim'
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+" Lilypond syntax highlighting
+Plug 'gisraptor/vim-lilypond-integrator'
+
+" Quarto notebooks
+" Plug 'quarto-dev/quarto-nvim'
+" Plug 'jmbuhr/otter.nvim' " Dependencies
+" Plug 'hrsh7th/nvim-cmp'
+
+" ::: Development tooling
+
+" Git wrapper
+Plug 'tpope/vim-fugitive'
+
+" Most recently used files
+Plug 'yegappan/mru'
+
+" Language Server Protocol configuration
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'nvim-lua/plenary.nvim'
+
+" Better syntax highlighting
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+" Wiki
+Plug 'vimwiki/vimwiki', { 'for': ['vimwiki']}
+
+" Document templates
+Plug 'noahfrederick/vim-skeleton'
+
+" Substitution helper and camel / snake case coercion
+Plug 'tpope/vim-abolish' " :%Subvert and :Coerce2xxx
+
+" Undo history
+Plug 'mbbill/undotree'
+
+" Tmux navigation
+Plug 'christoomey/vim-tmux-navigator'
+
+" EditorConfig file support
+Plug 'editorconfig/editorconfig-vim'
+
+" Send code to interpreter (on other tmux pane)
+Plug 'jpalardy/vim-slime'
+Plug 'Klafyvel/vim-slime-cells'
+
+" --- miscellanous ---
 
 " nvim in firefox
-Plugin 'glacambre/firenvim'
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
+call plug#end()
+
 " Brief help
 " :PluginList       - lists configured plugins
 " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
@@ -203,7 +178,10 @@ set sidescrolloff=15
 " set background=dark
 " let base16colorspace=256
 set termguicolors
-colorscheme base16-gruvbox-dark-soft
+" colorscheme base16-gruvbox-dark-soft
+let g:gruvbox_material_background = 'soft'
+let g:gruvbox_material_foreground = 'mix'
+colorscheme gruvbox-material
 highlight Pmenu guibg=#504945
 " }}}
 
@@ -447,7 +425,6 @@ endif
 
 " File browser {{{
 " -- netrw
-
 let g:netrw_liststyle = 0
 let g:netrw_fastbrowse = 1
 augroup netrw
@@ -479,13 +456,14 @@ nnoremap <C-W>l :lclose<CR>
 " }}}
 
 " Highlight stuff {{{
-" highlight whitespace
+" highlight trailing whitespace
 nnoremap <silent> <leader>hw :match Error "\v\s+$"<cr>
 nnoremap <silent> <leader>hW :match none<cr>
 
 nnoremap <silent> <leader>hs :set hlsearch<cr>
 nnoremap <silent> <leader>hS :set nohlsearch<cr>
 
+" Show insecable spaces and tabs
 set listchars=nbsp:·,tab:▸\ ,
 set list
 " }}}
@@ -528,6 +506,10 @@ augroup clean_fugitive_buffers
   au!
   autocmd BufReadPost fugitive://* set bufhidden=delete
 augroup END
+
+let g:nremap = {'s': 'k'}
+let g:xremap = {'s': 'k'}
+let g:oremap = {'s': 'k'}
 " }}}
 
 "" Vim surround {{{
@@ -573,7 +555,11 @@ nnoremap <silent> <leader>m :call fzf#run({
 
 " vim-lsp config {{{
 lua << EOF
+require("mason").setup()
+require("mason-lspconfig").setup()
+
 local lspconfig = require('lspconfig')
+
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -602,9 +588,29 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<localleader>r', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<localleader>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<localleader>l', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<localleader>f', vim.lsp.buf.formatting, bufopts)
+--  vim.keymap.set('n', '<localleader>f', vim.lsp.buf.format(suy, bufopts)
 end
 
+local on_attach_fmt = function(client, bufnr)
+  local bufopts = { noremap=true, silent=true, buffer=bufnr, async = true }
+  vim.keymap.set('n', '<localleader>f', vim.lsp.buf.format, bufopts)
+end
+
+
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  on_attach = on_attach,
+    sources = {
+        null_ls.builtins.formatting.black, -- python
+        null_ls.builtins.formatting.isort, -- python
+        null_ls.builtins.diagnostics.flake8, -- python
+
+        null_ls.builtins.diagnostics.shellcheck, -- sh
+
+        null_ls.builtins.formatting.prettier, -- javascript
+    },
+})
 
 local function get_pyenv_dir()
   return vim.fn.trim(vim.fn.system 'pyenv which python')
@@ -626,19 +632,57 @@ end
 
 lspconfig.pyright.setup{
   on_attach = on_attach,
+  settings = {
+      python = {
+          venvPath = '/home/pierre/.cache/pypoetry/virtualenvs'
+          }
+      },
   -- to make it work well with poetry
   -- credit Ian Liu Rodrigues
   -- https://www.reddit.com/r/neovim/comments/wls43h/pyright_lsp_configuration_for_python_poetry/ijvegs7/?context=8&depth=9
   on_new_config = function(config, root_dir)
-    config.settings.python.pythonPath = get_python_dir()
+    config.settings.python.pythonPath = get_python_dir(root_dir)
   end
 }
 
-  lspconfig.r_language_server.setup{
+lspconfig.r_language_server.setup{
+  on_attach  = on_attach
+}
+
+-- lspconfig.eslint_d.setup{
+--   on_attach = on_attach
+-- }
+
+lspconfig.tailwindcss.setup {
   on_attach  = on_attach
 }
 
 lspconfig.yamlls.setup {}
+
+lspconfig.tsserver.setup {
+  on_attach = on_attach
+}
+
+lspconfig.docker_compose_language_service.setup{
+  on_attach = on_attach
+}
+lspconfig.dockerls.setup{
+  on_attach = on_attach
+}
+
+-- require 'quarto'.setup {
+-- lspFeatures = {
+--   enabled = true,
+--   languages = { 'r', 'python'},
+--   diagnostics = {
+--     enabled = true,
+--     triggers = { "BufWrite" }
+--     },
+--   completion = {
+--     enabled = true
+--     }
+--   }
+-- }
 
 lspconfig.gopls.setup{
   on_attach = on_attach,
@@ -679,48 +723,31 @@ end
 EOF
 " }}}
 
-" function! s:on_lsp_buffer_enabled() abort
-"   setlocal omnifunc=lsp#complete
-"   setlocal signcolumn=auto
-"   let g:lsp_hover_ui="preview"
-"   let g:lsp_document_code_action_signs_enabled=0
-"   let g:lsp_diagnostics_virtual_text_enabled=0
-"   nmap <buffer> <C-]> <plug>(lsp-definition)
-"   nmap <buffer> <C-]> <plug>(lsp-definition)
-"   nmap <buffer> <leader>r <plug>(lsp-rename)
-"   nmap <buffer> <leader>ds <plug>(lsp-document-symbol)
-"   nmap <buffer> <leader>dd <plug>(lsp-document-diagnostics)
-"   nmap <buffer> <leader>df <plug>(lsp-document-format)
-"   vmap <buffer> <leader>df <plug>(lsp-document-range-format)
-"   nmap <buffer> <leader>dr <plug>(lsp-references)
-"   nmap <buffer> <leader>h <plug>(lsp-hover)
-"   nmap <buffer> ]d <plug>(lsp-next-diagnostic)
-"   nmap <buffer> ]w <plug>(lsp-next-warning)
-"   nmap <buffer> ]e <plug>(lsp-next-error)
-"   nmap <buffer> ]r <plug>(lsp-next-reference)
-"   nmap <buffer> [d <plug>(lsp-previous-diagnostic)
-"   nmap <buffer> [w <plug>(lsp-previous-warning)
-"   nmap <buffer> [e <plug>(lsp-previous-error)
-"   nmap <buffer> [r <plug>(lsp-previous-reference)
-" endfunction
-
-" augroup autoformat
-"   au!
-"   autocmd BufWritePre *  :LspDocumentFormat
-" augroup END
-
-augroup lsp_install
-  au!
-  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
-
-let g:lsp_virtual_text_prefix = " ‣ "
-let g:lsp_textprop_enabled = 0
-let g:lsp_highlights_enabled = 0
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_preview_max_width = 80
-let g:lsp_signature_help_enabled = 0
-
+" Treesitter configuration {{{
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = {"python"},
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn", -- set to `false` to disable one of the mappings
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
+  },
+  indent = {
+    enable = true
+  }
+}
+EOF
 " }}}
 
 " Editorconfig configuration {{{
@@ -736,23 +763,24 @@ augroup slimebindings
   let g:slime_target = "tmux"
   let g:slime_paste_file = tempname()
   let g:slime_no_mappings = 1
-  let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+  let g:slime_default_config = {"socket_name": "default", "target_pane": ":"}
   let g:slime_dont_ask_default = 1
-  let g:slime_python_ipython = 1
+  let g:slime_bracketed_paste = 1
 
   let interrupt_escape_sequence = "\x03" " Ascii for CTRL-C
-  let clearline_escape_sequence = "\<Esc>ggdGi" " Escape, clear text, go to insert mode (vim mode)
 
-  " Attempt with bracketed paste, i.e. -p option in tmux-paste.
+   " Attempt with bracketed paste, i.e. -p option in tmux-paste.
   " let interrupt_escape_sequence = "\e[201~\x03\e[200~" " Ascii for CTRL-C
   " let clearline_escape_sequence = "\e[201~\<Esc>ggdGi\e[200~" " Escape, clear text, go to insert mode (vim mode)
-  autocmd Filetype r,rmarkdown,python xmap   <silent> <localleader><localleader>   :call slime#send(clearline_escape_sequence)<CR>
-        \<Plug>SlimeRegionSend
-  autocmd Filetype r,rmarkdown,python nmap   <silent> <localleader>                :call slime#send(clearline_escape_sequence)<CR>
-        \<Plug>SlimeMotionSend
-  autocmd Filetype r,rmarkdown,python nmap   <silent> <localleader><localleader>   :call slime#send(clearline_escape_sequence)<CR>
-        \<Plug>SlimeLineSend1
-  autocmd Filetype r,rmarkdown,python nmap   <silent> <localleader>c      :call slime#send(interrupt_escape_sequence)<CR>
+  autocmd Filetype r,rmarkdown,rmd,quarto,python xmap   <silent> <localleader><localleader>  <Plug>SlimeRegionSend
+  autocmd Filetype r,rmarkdown,rmd,quarto,python nmap   <silent> <localleader>               <Plug>SlimeMotionSend
+  autocmd Filetype r,rmarkdown,rmd,quarto,python nmap   <silent> <localleader><localleader>  <Plug>SlimeLineSend1
+  autocmd Filetype r,rmarkdown,rmd,quarto,python nmap   <silent> <localleader>e      :call slime#send("\r")<CR>
+
+
+ " Working with cells
+  let g:slime_cell_delimiter="^```"
+  nmap <localleader>n <Plug>SlimeCellsSendAndGoToNext
 augroup end
 
 function! SendRCommand()
@@ -810,7 +838,7 @@ abbreviate :red: 🔴
 abbreviate :white: ⚪
 " }}}
 
-" Copy without linebreaks {{{
+" Copy without wrapping {{{
 function CopyNoLinebreak()
   let tw = &l:textwidth
   let &textwidth=10000
@@ -892,30 +920,19 @@ command AutoMake autocmd BufWritePost <buffer> silent make
 " ignore firenvim files
 let MRU_Exclude_Files = '^/run/user/.*'
 " }}}
-"
+
 " firenvim config {{{
 let g:firenvim_config = {
-      \ 'localSettings': {'takeover': 'never'}
+      \ 'localSettings': {
+        \ '.*': {'takeover': 'never'}
       \ }
-
-if exists('g:started_by_firenvim')
-
-" Write every 1 sec
-  let g:timer_started = v:false
-  function! My_Write(timer) abort
-    let g:timer_started = v:false
-    write
-  endfunction
-
-  function! Delay_My_Write() abort
-    if g:timer_started
-      return
-    end
-    let g:timer_started = v:true
-    call timer_start(1000, 'My_Write')
-  endfunction
-
-  au TextChanged * ++nested call Delay_My_Write()
-  au TextChangedI * ++nested call Delay_My_Write()
-endif
+    \ }
 "}}}
+
+" {{{ NRRW_REGION config
+let g:nrrw_rgn_vert = 1
+let g:nrrw_rgn_wdth = 80
+
+let g:nrrw_custom_options={}
+let g:nrrw_custom_options['filetype'] = 'python'
+" }}}

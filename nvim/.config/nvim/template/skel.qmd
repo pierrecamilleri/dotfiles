@@ -1,0 +1,13 @@
+---
+title: "@BASENAME@"
+author: "Pierre Camilleri"
+date: "@DATE@"
+output:
+  html_document:
+    theme: readable
+    toc: yes
+---
+
+```{r @CURSOR@}
+
+```

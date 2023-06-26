@@ -11,5 +11,5 @@ set shiftwidth=4
 nmap <silent> <leader>s :call slime#send(interrupt_escape_sequence)<CR>
       \:call slime#send('%run "' .  expand('%:p') . '"' . "\r")<CR>
 
-autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
 setlocal commentstring=#%s

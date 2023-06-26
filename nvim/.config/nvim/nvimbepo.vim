@@ -66,6 +66,8 @@ endfunction
 " ———————————————————————————————
 " will break ctrl-r, so...
 noremap <C-L> <C-R>
+inoremap <C-L> <C-R>
+
 
 nnoremap <C-t> <C-W><C-J>
 nnoremap <C-s> <C-W><C-K>

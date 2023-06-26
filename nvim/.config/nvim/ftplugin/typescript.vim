@@ -1,8 +1,7 @@
-augroup autoformat
-  au!
-  let g:lsp_format_sync_timeout = 1000
-  autocmd! BufWritePre *.ts call execute('LspDocumentFormatSync')
+if exists("b:did_ftplugin")
+  finish
+endif
+let b:did_ftplugin = 1
 
-  " autocmd BufWritePre *  :LspDocumentFormatSync
-  " autocmd BufWritePre *.ts  :EslintFix
-augroup END
+" autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+

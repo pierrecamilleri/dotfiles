@@ -14,8 +14,6 @@ alias look="csvlook -I | less -S"
 alias view="nvim -M"
 alias copy="xclip -selection c"
 
-# Open man pages with nvim
-export MANPAGER="nvim -c 'set ft=man' -"
 
 # Switching keyboards
 alias azerty='setxkbmap fr'
@@ -46,7 +44,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+# export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 alias tx=tmuxinator
 alias ipython=ipython3
@@ -67,3 +65,6 @@ alias mostlytouched="git log --format=format: --name-only --since=12.month| egre
 
 # image in terminal with kitty
 alias icat="kitty +kitten icat"
+
+#
+alias exportdotenv="set -o allexport && source .env && set +o allexport"

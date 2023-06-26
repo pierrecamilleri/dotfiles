@@ -216,3 +216,9 @@ eval "$(pyenv init -)"
 
 
 [ -f "/home/pierre/.ghcup/env" ] && source "/home/pierre/.ghcup/env" # ghcup-env
+
+# Open man pages with nvim
+export MANPAGER='nvim +Man!'
+
+export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{.git/*}"'
+export FZF_CTRL_T_COMMAND='rg --files --follow --hidden -g "!{.git/*}"'

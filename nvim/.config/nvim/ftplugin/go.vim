@@ -14,6 +14,6 @@ nmap <leader># <Plug>(go-alternate-edit)
 " command! -buffer GoBuild :!go build
 " command! -buffer GoInstall :!go install
 
-autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
 autocmd BufWritePre <buffer> lua go_org_imports(1000)
 

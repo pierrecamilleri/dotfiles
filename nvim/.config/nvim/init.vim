@@ -631,12 +631,6 @@ local function get_python_dir(workspace)
 end
 
 lspconfig.pyright.setup{
-  on_attach = on_attach,
-  settings = {
-      python = {
-          venvPath = '/home/pierre/.cache/pypoetry/virtualenvs'
-          }
-      },
   -- to make it work well with poetry
   -- credit Ian Liu Rodrigues
   -- https://www.reddit.com/r/neovim/comments/wls43h/pyright_lsp_configuration_for_python_poetry/ijvegs7/?context=8&depth=9
@@ -649,6 +643,10 @@ lspconfig.r_language_server.setup{
   on_attach  = on_attach
 }
 
+lspconfig.ruff_lsp.setup{
+    on_attach = on_attach,
+}
+
 -- lspconfig.eslint_d.setup{
 --   on_attach = on_attach
 -- }
@@ -657,7 +655,13 @@ lspconfig.tailwindcss.setup {
   on_attach  = on_attach
 }
 
-lspconfig.yamlls.setup {}
+lspconfig.yamlls.setup {
+  on_attach = on_attach
+}
+
+lspconfig.volar.setup {
+  on_attach = on_attach
+}
 
 lspconfig.tsserver.setup {
   on_attach = on_attach

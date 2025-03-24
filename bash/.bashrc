@@ -222,3 +222,15 @@ export MANPAGER='nvim +Man!'
 
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{.git/*}"'
 export FZF_CTRL_T_COMMAND='rg --files --follow --hidden -g "!{.git/*}"'
+
+alias_with() {
+  if [ -z "$1" ]; then
+    alias "$1" "!!"
+  fi
+}
+
+export FLYCTL_INSTALL="/home/pierre/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+source '/home/pierre/.bash_completions/frictionless.sh'
+. "$HOME/.cargo/env"

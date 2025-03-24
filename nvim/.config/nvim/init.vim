@@ -13,7 +13,8 @@ Plug 'junegunn/fzf.vim'
 " Plug 'w0rp/ale'
 
 " Directories tree
-Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-vinegar'
+Plug 'stevearc/oil.nvim'
 
 " ----------------------------
 " --- General text editing ---
@@ -50,6 +51,9 @@ Plug 'AndrewRadev/switch.vim' " gs to switch
 " Wrap and unwrap argument lists
 Plug 'FooSoft/vim-argwrap' " ,aw
 
+" Highlight stuff
+Plug 'azabiong/vim-highlighter'
+
 " Text objects
 Plug 'kana/vim-textobj-user'
 Plug 'sgur/vim-textobj-parameter' " a,
@@ -85,6 +89,9 @@ Plug 'gisraptor/vim-lilypond-integrator'
 
 " ::: Development tooling
 
+" DB inspection
+Plug 'tpope/vim-dadbod'
+
 " Git wrapper
 Plug 'tpope/vim-fugitive'
 
@@ -95,11 +102,15 @@ Plug 'yegappan/mru'
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
-Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'nvimtools/none-ls.nvim' " Formerly null-ls
 Plug 'nvim-lua/plenary.nvim'
+Plug 'jay-babu/mason-nvim-dap.nvim'
+Plug 'mfussenegger/nvim-dap'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'rcarriga/nvim-dap-ui'
 
 " Better syntax highlighting
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Wiki
 Plug 'vimwiki/vimwiki', { 'for': ['vimwiki']}
@@ -120,7 +131,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'editorconfig/editorconfig-vim'
 
 " Send code to interpreter (on other tmux pane)
-Plug 'jpalardy/vim-slime'
+Plug 'jpalardy/vim-slime', { 'for': ['r', 'rmarkdown', 'rmd', 'quarto', 'python'] }
 Plug 'Klafyvel/vim-slime-cells'
 
 " --- miscellanous ---
@@ -435,6 +446,11 @@ augroup END
 
 " Make directory of the file the current directory
 nnoremap <leader>cd :cd %:p:h<CR>
+
+lua << EOF
+local oil = require("oil").setup()
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+EOF
 " }}}
 
 " Quickfix window {{{
@@ -553,10 +569,53 @@ nnoremap <silent> <leader>m :call fzf#run({
       \ 'options': '--ansi --layout=reverse-list --multi --prompt "Markdown> "'})<CR>
 " }}}
 
+" nvim-dap config {{{
+lua << EOF
+local dap = require('dap')
+
+dap.adapters.python = {
+  type = 'executable',
+  command = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python",
+  args = { "-m", "debugpy.adapter" }
+}
+
+dap.configurations.python = {
+  {
+    type = "python",
+    request = "launch",
+    name = "Launch file",
+    program = "${file}", -- The current file
+    pythonPath = function()
+      -- Use the active virtual environment or system Python
+      local venv_path = os.getenv("VIRTUAL_ENV")
+      if venv_path then
+        return venv_path .. "/bin/python"
+      else
+        return "python3"
+      end
+    end,
+  },
+}
+vim.keymap.set('n', '<localleader>é', function() require('dap').continue() end)
+vim.keymap.set('n', '<localleader>o', function() require('dap').step_over() end)
+vim.keymap.set('n', '<localleader>p', function() require('dap').step_into() end)
+vim.keymap.set('n', '<localleader>w', function() require('dap').step_out() end)
+vim.keymap.set('n', '<localleader>b', function() require('dap').toggle_breakpoint() end)
+vim.keymap.set('n', '<Leader>B', function() require('dap').set_breakpoint() end)
+
+require("dapui").setup()
+vim.keymap.set("n", "<F5>", function() require("dapui").toggle() end)
+EOF
+" }}}
+
 " vim-lsp config {{{
 lua << EOF
 require("mason").setup()
 require("mason-lspconfig").setup()
+require("mason-nvim-dap").setup({
+  ensure_installed = { "python" }, -- Installs debugpy
+  automatic_setup = true, -- Auto setup debug adapters
+})
 
 local lspconfig = require('lspconfig')
 
@@ -568,6 +627,7 @@ vim.keymap.set('n', '<localleader>f', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<localleader>q', vim.diagnostic.setqflist, opts)
+vim.keymap.set('n', '<localleader>t', function(...) vim.diagnostic.setqflist({severity = { min = vim.diagnostic.severity.INFO}}, ...) end , opts)
 
 
 -- Use an on_attach function to only map the following keys
@@ -604,9 +664,6 @@ null_ls.setup({
     sources = {
         null_ls.builtins.formatting.black, -- python
         null_ls.builtins.formatting.isort, -- python
-        null_ls.builtins.diagnostics.flake8, -- python
-
-        null_ls.builtins.diagnostics.shellcheck, -- sh
 
         null_ls.builtins.formatting.prettier, -- javascript
     },
@@ -643,23 +700,27 @@ lspconfig.r_language_server.setup{
   on_attach  = on_attach
 }
 
-lspconfig.ruff_lsp.setup{
-    on_attach = on_attach,
+lspconfig.ruff.setup{
+  on_attach = on_attach
 }
 
--- lspconfig.eslint_d.setup{
---   on_attach = on_attach
+lspconfig.eslint.setup{
+  on_attach = on_attach
+}
+
+-- lspconfig.tailwindcss.setup {
+--   on_attach  = on_attach
 -- }
-
-lspconfig.tailwindcss.setup {
-  on_attach  = on_attach
-}
 
 lspconfig.yamlls.setup {
   on_attach = on_attach
 }
 
 lspconfig.volar.setup {
+  on_attach = on_attach
+}
+
+lspconfig.rust_analyzer.setup {
   on_attach = on_attach
 }
 
@@ -671,6 +732,10 @@ lspconfig.docker_compose_language_service.setup{
   on_attach = on_attach
 }
 lspconfig.dockerls.setup{
+  on_attach = on_attach
+}
+
+lspconfig.spectral.setup{
   on_attach = on_attach
 }
 
@@ -725,33 +790,7 @@ function go_org_imports(wait_ms)
   end
 end
 EOF
-" }}}
 
-" Treesitter configuration {{{
-lua << EOF
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = {"python"},
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "gnn", -- set to `false` to disable one of the mappings
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
-    },
-  },
-  indent = {
-    enable = true
-  }
-}
-EOF
 " }}}
 
 " Editorconfig configuration {{{
@@ -939,4 +978,8 @@ let g:nrrw_rgn_wdth = 80
 
 let g:nrrw_custom_options={}
 let g:nrrw_custom_options['filetype'] = 'python'
+" }}}
+
+" {{{ vim-highlighter
+let HiSetSL = 'f<C-F>'
 " }}}

@@ -130,7 +130,7 @@ set $ws2 "2:  "
 set $ws3 "3:  "
 set $ws4 "4:  "
 set $ws5 "5:  "
-set $ws6 "6:  "
+set $ws6 "6: "
 set $ws7 "7:  "
 set $ws8 "8:  "
 set $ws9 "9:  "
@@ -148,7 +148,7 @@ bindsym $mod+mod2+KP_8 workspace number $ws8
 bindsym $mod+mod2+KP_9 workspace number $ws9
 bindsym $mod+mod2+KP_0 workspace number $ws10
 
-bindsym $mod+b workspace back_and_forth
+bindsym $mod+t workspace back_and_forth
 
 # move focused container to workspace
 bindsym $mod+mod2+Shift+KP_End move container to workspace number $ws1; workspace $ws1
@@ -254,7 +254,7 @@ workspace $ws4 output HDMI-2 primary
 workspace $ws5 output primary
 workspace $ws6 output primary
 workspace $ws7 output HDMI-2 primary
-workspace $ws8 output HDMI-2 primary
+workspace $ws8 output primary
 workspace $ws9 output HDMI-2 primary
 workspace $ws0 output primary
 

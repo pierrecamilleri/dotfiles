@@ -68,3 +68,5 @@ alias icat="kitty +kitten icat"
 
 #
 alias exportdotenv="set -o allexport && source .env && set +o allexport"
+
+alias calendar="orage"

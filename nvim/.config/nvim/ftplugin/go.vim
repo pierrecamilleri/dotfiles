@@ -17,3 +17,4 @@ nmap <leader># <Plug>(go-alternate-edit)
 autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
 autocmd BufWritePre <buffer> lua go_org_imports(1000)
 
+setlocal commentstring=//%s

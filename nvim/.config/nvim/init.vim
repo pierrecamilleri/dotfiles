@@ -674,17 +674,22 @@ local function get_pyenv_dir()
 end
 
 local function get_poetry_dir()
-  return vim.fn.trim(vim.fn.system 'poetry env info -p')
-end
+  return vim.fn.trim(vim.fn.system 'poetry env info -p') end
 
 local function get_python_dir(workspace)
-  local poetry_match = vim.fn.glob(path.join(workspace, 'poetry.lock'))
+ -- Looks for .venv/bin/python under the project root
+ local venv_path = workspace .. "/.venv/bin/python"
+ if vim.fn.executable(venv_path) == 1 then
+   return venv_path
+ end
+
+ local poetry_match = vim.fn.glob(path.join(workspace, 'poetry.lock'))
   if poetry_match ~= '' then
     return get_poetry_dir() .. '/bin/python'
   else
     return get_pyenv_dir()
   end
-  return ''
+  return '.venv'
 end
 
 lspconfig.pyright.setup{
@@ -724,7 +729,7 @@ lspconfig.rust_analyzer.setup {
   on_attach = on_attach
 }
 
-lspconfig.tsserver.setup {
+lspconfig.ts_ls.setup {
   on_attach = on_attach
 }
 
@@ -771,6 +776,9 @@ lspconfig.gopls.setup{
             ST1023 = true,
 		     },
 		     staticcheck = true,
+        env = {
+              GOFLAGS = "-tags=e2e"
+          }
 		    },
 	    },
 }

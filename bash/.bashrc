@@ -43,7 +43,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -99,26 +99,13 @@ bind "set show-all-if-ambiguous on"
 bind "set completion-ignore-case on"
 bind "set menu-complete-display-prefix on"
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/pierre/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/pierre/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/pierre/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/pierre/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
 set -o vi
-export FZF_DEFAULT_OPTS="--exact"
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[ -f ~/.fzf.colors ] && source ~/.fzf.colors
+# export FZF_DEFAULT_OPTS="--exact"
+# [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# [ -f ~/.fzf.colors ] && source ~/.fzf.colors
+#
+# export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{.git/*}"'
+# export FZF_CTRL_T_COMMAND='rg --files --follow --hidden -g "!{.git/*}"'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -135,8 +122,13 @@ if [ -d "/usr/local/bin" ] ; then
     PATH="/usr/local/bin:$PATH"
 fi
 
+if [ -d "/home/pierre/.local/bin" ] ; then
+    PATH="/home/pierre/.local/bin:$PATH"
+fi
+
 export VISUAL=nvim
 export EDITOR="$VISUAL"
+
 ###-begin-npm-completion-###
 #
 # npm command completion script
@@ -207,21 +199,11 @@ elif type compctl &>/dev/null; then
 fi
 ###-end-npm-completion-###
 
-export TEMPLATES_PATH="/home/pierre/.templates"
-source "$TEMPLATES_PATH/template.sh"
-
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-
 [ -f "/home/pierre/.ghcup/env" ] && source "/home/pierre/.ghcup/env" # ghcup-env
 
 # Open man pages with nvim
 export MANPAGER='nvim +Man!'
 
-export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{.git/*}"'
-export FZF_CTRL_T_COMMAND='rg --files --follow --hidden -g "!{.git/*}"'
 
 alias_with() {
   if [ -z "$1" ]; then
@@ -229,8 +211,19 @@ alias_with() {
   fi
 }
 
-export FLYCTL_INSTALL="/home/pierre/.fly"
-export PATH="$FLYCTL_INSTALL/bin:$PATH"
+export PATH="$HOME/.pyenv/bin:$PATH"
 
-source '/home/pierre/.bash_completions/frictionless.sh'
-. "$HOME/.cargo/env"
+# Start i3 on login
+if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
+  exec startx
+fi
+
+if [ -d "$HOME/go/bin" ] ; then
+    PATH="$HOME/go/bin:$PATH"
+fi
+
+if [ -d "/usr/local/go/bin" ] ; then
+    PATH="/usr/local/go/bin:$PATH"
+fi
+
+
